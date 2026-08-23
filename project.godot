@@ -1,0 +1,47 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="rpcbata"
+run/main_scene="uid://caahcpuj4a7aj"
+config/features=PackedStringArray("4.7", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+DsInspector="*uid://davjdp72etv11"
+"Rpc联机方法"="*uid://d27k5u4oj122i"
+"实体功能"="*uid://bfklxqaomr6xx"
+"全局物体表"="*uid://dascrqb666akq"
+"属性"="*uid://p3nj40dfmvev"
+"属性设置需要的依赖"="*uid://df8u1txbbh6r"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ChineseNodeSelector/plugin.cfg", "res://addons/ds_inspector/plugin.cfg", "res://addons/wiggly_appendage_2d/plugin.cfg")
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"

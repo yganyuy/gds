@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://caahcpuj4a7aj"]
+
+[ext_resource type="Texture2D" uid="uid://c2c8qvb3tkado" path="res://icon.svg" id="2_gc8m6"]
+[ext_resource type="Script" uid="uid://5w14nseoklwo" path="res://创建连接房间.gd" id="2_ifq0q"]
+[ext_resource type="Script" uid="uid://k5fwvdb0kgst" path="res://加入房间.gd" id="3_6camb"]
+[ext_resource type="Script" uid="uid://bho2gcc36svuw" path="res://音效播放器.gd" id="3_bye6l"]
+[ext_resource type="AudioStream" uid="uid://cxmcja7fh48ke" path="res://jg.mp3" id="4_hvqwx"]
+[ext_resource type="Script" uid="uid://my6qmpsajx31" path="res://修改服务器地址.gd" id="4_o6spf"]
+[ext_resource type="Script" uid="uid://drm5xpar7q6je" path="res://ui启用.gd" id="5_hvqwx"]
+[ext_resource type="Script" uid="uid://b8jfo1i2gaf6t" path="res://rpc1/直接生成物体.gd" id="8_fgm2i"]
+[ext_resource type="PackedScene" uid="uid://vlhx2u0dkhhg" path="res://角色.tscn" id="9_c624s"]
+[ext_resource type="Script" uid="uid://bk1swd0i1t30n" path="res://玩家加入.gd" id="10_c624s"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gc8m6"]
+texture = ExtResource("2_gc8m6")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+0:7/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_wvhbo"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_gc8m6")
+
+[node name="Node" type="Node2D" unique_id=707188517]
+
+[node name="控制的" type="CanvasLayer" parent="." unique_id=277989517]
+
+[node name="VirtualJoystick" type="VirtualJoystick" parent="控制的" unique_id=80759426]
+offset_left = 8.0
+offset_top = 413.0
+offset_right = 244.0
+offset_bottom = 637.0
+joystick_size = 235.0
+
+[node name="Label" type="Label" parent="控制的" unique_id=1324537312]
+offset_left = 731.0
+offset_top = 8.0
+offset_right = 771.0
+offset_bottom = 31.0
+text = "状态"
+
+[node name="菜单的" type="CanvasLayer" parent="." unique_id=1268171612]
+
+[node name="Control" type="Control" parent="菜单的" unique_id=1137952819]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
+
+[node name="创" type="Button" parent="菜单的/Control" unique_id=995695187]
+layout_mode = 0
+offset_left = -1.0000153
+offset_top = 1.0000076
+offset_right = 154.99998
+offset_bottom = 143.63861
+scale = Vector2(0.9936138, 0.9534584)
+text = "创"
+icon = ExtResource("2_gc8m6")
+script = ExtResource("2_ifq0q")
+
+[node name="入" type="Button" parent="菜单的/Control" unique_id=978282766]
+layout_mode = 0
+offset_left = 159.0
+offset_right = 315.0
+offset_bottom = 136.0
+text = "入
+"
+icon = ExtResource("2_gc8m6")
+script = ExtResource("3_6camb")
+
+[node name="输入" type="LineEdit" parent="菜单的/Control" unique_id=619071225]
+layout_mode = 0
+offset_left = 327.0
+offset_top = 1.0
+offset_right = 395.5
+offset_bottom = 32.0
+scale = Vector2(4.783155, 4.166567)
+script = ExtResource("4_o6spf")
+
+[node name="Button" type="Button" parent="菜单的/Control" unique_id=1338361768]
+layout_mode = 0
+offset_left = 969.0
+offset_top = 8.0
+offset_right = 1141.0
+offset_bottom = 144.0
+text = "创建"
+icon = ExtResource("2_gc8m6")
+
+[node name="音频播放器" type="Node" parent="菜单的" unique_id=1427180186]
+script = ExtResource("3_bye6l")
+"音效文件" = Array[AudioStream]([ExtResource("4_hvqwx")])
+"音调" = 2.0
+
+[node name="TileMap" type="TileMap" parent="." unique_id=1171988011]
+tile_set = SubResource("TileSet_wvhbo")
+format = 2
+layer_0/tile_data = PackedInt32Array(-262151, 0, 3, -393212, 0, 3, -262131, 0, 3, 327671, 0, 3, 720896, 0, 3, 720909, 0, 3, -196577, 0, 3, 655386, 0, 3, 1048560, 0, 3, -18, 0, 3, -720908, 0, 3, -917491, 0, 3, -655330, 0, 3, 1245174, 0, 3, 1441808, 0, 3, 1114149, 0, 3, -327640, 0, 3, -327639, 0, 3)
+
+[node name="sb" type="Node2D" parent="." unique_id=170388044]
+
+[node name="UI启用" type="Node" parent="." unique_id=1977602800 node_paths=PackedStringArray("修改ui")]
+script = ExtResource("5_hvqwx")
+"修改ui" = NodePath("../菜单的/Control")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=450726634]
+zoom = Vector2(0.4, 0.4)
+
+[node name="直接生成物体" type="Node" parent="." unique_id=1082359882 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("8_fgm2i")
+"目标节点" = NodePath("../sb")
+"素材" = ExtResource("9_c624s")
+"开始时生成" = false
+"偏移" = Vector2(500, 500)
+
+[node name="节点" type="Node" parent="." unique_id=975442888]
+script = ExtResource("10_c624s")
+
+[connection signal="text_changed" from="菜单的/Control/输入" to="菜单的/Control/输入" method="_on_text_changed"]
+[connection signal="button_down" from="菜单的/Control/Button" to="直接生成物体" method="_on_button_button_down"]

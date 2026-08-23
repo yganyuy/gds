@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://vlhx2u0dkhhg"]
+
+[ext_resource type="Texture2D" uid="uid://c2c8qvb3tkado" path="res://icon.svg" id="1_0fisn"]
+[ext_resource type="Script" uid="uid://diegwlr5eylqs" path="res://角色.gd" id="1_p3n6a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g7b7a"]
+radius = 16.0
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1462820754]
+collision_layer = 0
+script = ExtResource("1_p3n6a")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=627528835]
+scale = Vector2(0.2109375, 0.21484375)
+texture = ExtResource("1_0fisn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=574349089]
+scale = Vector2(1, 0.99999994)
+shape = SubResource("CircleShape2D_g7b7a")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2065773836]
+enabled = false
+zoom = Vector2(2.323, 2.323)
+
+[node name="触屏按钮" type="TouchScreenButton" parent="." unique_id=1996794544]
+position = Vector2(-61, 22)
+texture_normal = ExtResource("1_0fisn")
+
+[connection signal="pressed" from="触屏按钮" to="." method="删除自身"]
