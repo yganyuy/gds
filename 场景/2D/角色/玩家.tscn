@@ -1,0 +1,172 @@
+[gd_scene format=3 uid="uid://b2i1nfcp3dpaw"]
+
+[ext_resource type="Texture2D" uid="uid://bhj4rmquhkncs" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51 (2).png" id="1_6045p"]
+[ext_resource type="Script" uid="uid://bmpsm3olo68n5" path="res://场景/2D/脚本/玩家.gd" id="1_rx82r"]
+[ext_resource type="Texture2D" uid="uid://du328mlfou48o" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51 (1).png" id="2_stxxd"]
+[ext_resource type="Texture2D" uid="uid://rdfrmtvhdwvk" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51.png" id="3_rx82r"]
+[ext_resource type="Script" uid="uid://bijdeigc02m2x" path="res://场景/2D/脚本/玩家(子).gd" id="5_rx82r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n4uw4"]
+atlas = ExtResource("1_6045p")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xtemi"]
+atlas = ExtResource("1_6045p")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkwd7"]
+atlas = ExtResource("1_6045p")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vy442"]
+atlas = ExtResource("1_6045p")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqanw"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14ahd"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lb4xv"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jn66"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lek26"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i0m33"]
+atlas = ExtResource("2_stxxd")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wl6fx"]
+atlas = ExtResource("1_6045p")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibswv"]
+atlas = ExtResource("1_6045p")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06g23"]
+atlas = ExtResource("1_6045p")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1eex"]
+atlas = ExtResource("3_rx82r")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dr63"]
+atlas = ExtResource("3_rx82r")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4iu3"]
+atlas = ExtResource("3_rx82r")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wvhbo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n4uw4")
+}],
+"loop": 1,
+"name": &"在半空中",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"奔跑",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xtemi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkwd7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vy442")
+}],
+"loop": 1,
+"name": &"落地",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqanw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14ahd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lb4xv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jn66")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lek26")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i0m33")
+}],
+"loop": 1,
+"name": &"行走",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wl6fx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibswv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_06g23")
+}],
+"loop": 1,
+"name": &"跳跃开始",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1eex")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dr63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4iu3")
+}],
+"loop": 1,
+"name": &"默认",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvhbo"]
+radius = 2.0
+height = 10.0
+
+[node name="p" type="CharacterBody2D" unique_id=1518132891]
+script = ExtResource("1_rx82r")
+
+[node name="动画精灵" type="AnimatedSprite2D" parent="." unique_id=2137889619]
+scale = Vector2(0.245, 0.245)
+sprite_frames = SubResource("SpriteFrames_wvhbo")
+animation = &"在半空中"
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=1188536701]
+shape = SubResource("CapsuleShape2D_wvhbo")
+
+[node name="画布层" type="CanvasLayer" parent="." unique_id=844365917]
+
+[node name="节点" type="Node" parent="." unique_id=1812879221]
+script = ExtResource("5_rx82r")

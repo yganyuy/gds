@@ -1,0 +1,124 @@
+[gd_scene format=3 uid="uid://bwu34rb4a5x3v"]
+
+[ext_resource type="Texture2D" uid="uid://fqnx8h6qoeuj" path="res://场景/2D/贴图/鸡.png" id="1_hk0vf"]
+[ext_resource type="Script" uid="uid://dqthqao5u3x0c" path="res://场景/2D/脚本/组件/颜色浅变.gd" id="2_rurc8"]
+[ext_resource type="Script" uid="uid://qb1rmmwgp8gj" path="res://场景/2D/脚本/组件/音效播放器.gd" id="3_1xwx7"]
+[ext_resource type="AudioStream" uid="uid://qpqy5nwf0csk" path="res://场景/2D/音频/音效/jg.mp3" id="4_tx8bi"]
+[ext_resource type="Texture2D" uid="uid://vb2p73m0yos0" path="res://场景/2D/贴图/血条.png" id="5_w5h8f"]
+[ext_resource type="Script" uid="uid://clrqm6av2iufn" path="res://场景/2D/脚本/切换地图.gd" id="6_ly611"]
+[ext_resource type="Script" uid="uid://bfha6f20l8e06" path="res://场景/2D/脚本/UI启用.gd" id="6_t8l2j"]
+[ext_resource type="AudioStream" uid="uid://44bjq3nnojnp" path="res://场景/2D/音频/音乐/dididi.ogg" id="6_xkwow"]
+[ext_resource type="PackedScene" uid="uid://hgenc42oax3w" path="res://场景/2D/地图/场景2.tscn" id="7_e8uy1"]
+
+[node name="Node2D" type="Node2D" unique_id=1329713838]
+
+[node name="相机2D" type="Camera2D" parent="." unique_id=1444964425]
+position = Vector2(576, 325)
+
+[node name="鸡" type="Sprite2D" parent="." unique_id=1870850887]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(579, 276.00003)
+scale = Vector2(0.2777778, 0.31296295)
+texture = ExtResource("1_hk0vf")
+
+[node name="计时器" type="Timer" parent="鸡" unique_id=617594787]
+one_shot = true
+autostart = true
+
+[node name="浅变颜色gd" type="Node" parent="鸡" unique_id=1293178750]
+script = ExtResource("2_rurc8")
+"浅变颜色" = Color(1, 1, 1, 1)
+
+[node name="计时器2" type="Timer" parent="鸡" unique_id=1273716678]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="浅变颜色gd2" type="Node" parent="鸡" unique_id=1027278357 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("2_rurc8")
+"目标节点" = NodePath("..")
+"自动填充目标节点为父级" = false
+
+[node name="标签" type="Label" parent="鸡" unique_id=662196064]
+oversampling_with_scale = 2
+offset_left = -259.2
+offset_top = 380.2366
+offset_right = -131.20001
+offset_bottom = 403.2366
+scale = Vector2(5.326, 5.326)
+text = "欢迎运行我的模板"
+
+[node name="自定义音频播放器" type="Node" parent="." unique_id=1071554133]
+script = ExtResource("3_1xwx7")
+"音效文件" = Array[AudioStream]([ExtResource("4_tx8bi")])
+"音调" = 2.0
+
+[node name="控件" type="Control" parent="." unique_id=1161909397]
+visible = false
+custom_minimum_size = Vector2(0, 1.66)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.83
+offset_right = 1150.0
+offset_bottom = 645.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="精灵" type="Sprite2D" parent="控件" unique_id=2038677184]
+clip_children = 2
+position = Vector2(552.99994, 590.8301)
+scale = Vector2(4.6666675, 3.1420584)
+texture = ExtResource("5_w5h8f")
+
+[node name="纹理按钮" type="TextureButton" parent="控件/精灵" unique_id=1222044231]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -17.0
+offset_right = -27.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="控件/精灵" unique_id=243934304]
+modulate = Color(0.011229367, 0.012617188, 0, 1)
+oversampling_with_scale = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -23.357141
+offset_top = -7.8244815
+offset_right = 18.64286
+offset_bottom = -17.824482
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.485, 0.685)
+text = "联机功能测试"
+metadata/_edit_lock_ = true
+
+[node name="自定义音频播放器2" type="Node" parent="." unique_id=946016909]
+script = ExtResource("3_1xwx7")
+"音效文件" = Array[AudioStream]([ExtResource("6_xkwow")])
+"类型" = "仅第一个"
+"音调" = 0.8
+
+[node name="UI启用" type="Node" parent="." unique_id=977446764 node_paths=PackedStringArray("设置节点")]
+script = ExtResource("6_t8l2j")
+"设置节点" = NodePath("../控件")
+
+[node name="切换地图" type="Node" parent="." unique_id=1556262330]
+script = ExtResource("6_ly611")
+"目标地图" = Array[PackedScene]([ExtResource("7_e8uy1")])
+
+[connection signal="timeout" from="鸡/计时器" to="鸡/浅变颜色gd" method="执行浅变"]
+[connection signal="timeout" from="鸡/计时器" to="自定义音频播放器" method="播放音效"]
+[connection signal="timeout" from="鸡/计时器2" to="鸡/浅变颜色gd2" method="执行浅变"]
+[connection signal="当浅变结束时" from="鸡/浅变颜色gd2" to="自定义音频播放器2" method="_on_浅变颜色gd_2_当浅变结束时"]
+[connection signal="当浅变结束时" from="鸡/浅变颜色gd2" to="UI启用" method="启用ui"]
+[connection signal="button_down" from="控件/精灵/纹理按钮" to="切换地图" method="直接切换地图"]
+[connection signal="当播放结束时" from="自定义音频播放器2" to="自定义音频播放器2" method="播放音效"]

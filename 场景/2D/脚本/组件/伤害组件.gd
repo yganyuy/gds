@@ -1,0 +1,342 @@
+extends Node
+class_name 伤害组件
+
+## 伤害组件 - 对进入区域的实体造成伤害
+
+# ============ 枚举定义 ============
+enum 伤害触发方式 {
+	进入时,   # 进入区域时造成一次伤害
+	持续,     # 在区域内持续造成伤害
+	离开时    # 离开区域时造成一次伤害
+}
+
+# ============ 导出属性 ============
+@export var 触发方式: 伤害触发方式 = 伤害触发方式.进入时  # 改名避免冲突
+@export var 伤害量: float = 10.0
+@export var 伤害间隔: float = 1.0  # 持续伤害的间隔（秒）
+@export var 友伤: bool = false  # 是否允许攻击友方阵营
+@export var 自身阵营: 生命组件.阵营类型 = 生命组件.阵营类型.敌对
+
+# 击退参数
+@export var 击退距离: float = 50.0
+@export var 击退力度: float = 1.0
+
+# 是否启用
+@export var 启用: bool = true
+
+# ============ 内部变量 ============
+var _受伤害实体: Dictionary = {}  # {实体: 计时器}
+var _进入实体的伤害计时器: Dictionary = {}  # {实体: 计时器}
+
+
+# ============ 信号定义 ============
+signal 命中(目标: Node, 伤害: float)
+signal 杀死(目标: Node, 伤害: float)
+signal 开始伤害(目标: Node)
+signal 停止伤害(目标: Node)
+
+
+func _ready():
+	# 根据伤害方式决定是否启用碰撞检测
+	var 父节点 = get_parent()
+	if 父节点 is Area2D or 父节点 is Area3D:
+		# 对于Area节点，在_ready中连接信号
+		_连接区域信号()
+	else:
+		print("警告: 伤害组件需要挂载在Area2D或Area3D节点下")
+
+
+func _process(delta):
+	if not 启用:
+		return
+	
+	# 处理持续伤害
+	if 触发方式 == 伤害触发方式.持续:
+		_处理持续伤害(delta)
+
+
+# ============ 区域信号连接 ============
+
+func _连接区域信号():
+	var 父节点 = get_parent()
+	if 父节点 is Area2D:
+		父节点.body_entered.connect(_on_body_entered)
+		父节点.body_exited.connect(_on_body_exited)
+		父节点.area_entered.connect(_on_area_entered)
+		父节点.area_exited.connect(_on_area_exited)
+	elif 父节点 is Area3D:
+		父节点.body_entered.connect(_on_body_entered)
+		父节点.body_exited.connect(_on_body_exited)
+		父节点.area_entered.connect(_on_area_entered)
+		父节点.area_exited.connect(_on_area_exited)
+
+
+# ============ 碰撞处理 ============
+
+func _on_body_entered(body: Node):
+	_实体进入(body)
+
+
+func _on_body_exited(body: Node):
+	_实体离开(body)
+
+
+func _on_area_entered(area: Area2D):
+	var 父节点 = area.get_parent()
+	if 父节点:
+		_实体进入(父节点)
+
+
+func _on_area_exited(area: Area2D):
+	var 父节点 = area.get_parent()
+	if 父节点:
+		_实体离开(父节点)
+
+
+# ============ 核心逻辑 ============
+
+func _实体进入(实体: Node):
+	if not 启用:
+		return
+	
+	if not _可以造成伤害(实体):
+		return
+	
+	# 获取生命组件
+	var 生命组件实例 = 生命组件._获取生命组件(实体)
+	if not 生命组件实例:
+		return
+	
+	# 根据伤害方式处理
+	match 触发方式:
+		伤害触发方式.进入时:
+			_造成伤害(实体, 生命组件实例)
+		
+		伤害触发方式.持续:
+			# 记录实体并初始化计时器
+			if not _受伤害实体.has(实体):
+				_受伤害实体[实体] = 0.0
+				_进入实体的伤害计时器[实体] = 0.0
+				_造成持续伤害(实体, 生命组件实例, true)
+		
+		伤害触发方式.离开时:
+			# 记录实体用于离开时造成伤害
+			_受伤害实体[实体] = 0.0
+
+
+func _实体离开(实体: Node):
+	if not 启用:
+		return
+	
+	match 触发方式:
+		伤害触发方式.进入时:
+			# 进入时伤害模式，离开不做处理
+			pass
+		
+		伤害触发方式.持续:
+			# 持续伤害模式，离开时停止伤害
+			if _受伤害实体.has(实体):
+				var 生命组件实例 = 生命组件._获取生命组件(实体)
+				if 生命组件实例:
+					_停止持续伤害(实体)
+				_受伤害实体.erase(实体)
+				_进入实体的伤害计时器.erase(实体)
+		
+		伤害触发方式.离开时:
+			# 离开时造成伤害
+			if _受伤害实体.has(实体):
+				var 生命组件实例 = 生命组件._获取生命组件(实体)
+				if 生命组件实例:
+					_造成伤害(实体, 生命组件实例)
+				_受伤害实体.erase(实体)
+
+
+func _造成伤害(目标: Node, 生命组件实例: 生命组件):
+	if not 启用:
+		return
+	
+	if not 生命组件实例:
+		return
+	
+	if not 生命组件实例.是否存活():
+		return
+	
+	# 计算击退方向
+	var 击退方向 = _计算击退方向(目标)
+	
+	# 应用伤害
+	var 是否死亡 = 生命组件实例.受伤害(伤害量, self, 击退方向 * 击退力度)
+	
+	# 触发命中信号
+	命中.emit(目标, 伤害量)
+	
+	# 如果目标死亡，触发杀死信号
+	if 是否死亡:
+		杀死.emit(目标, 伤害量)
+
+
+func _造成持续伤害(目标: Node, 生命组件实例: 生命组件, 首次伤害: bool = false):
+	if not 启用:
+		return
+	
+	if not 生命组件实例.是否存活():
+		return
+	
+	# 触发开始伤害信号
+	if 首次伤害:
+		开始伤害.emit(目标)
+	
+	# 计算击退方向
+	var 击退方向 = _计算击退方向(目标)
+	
+	# 应用伤害
+	var 是否死亡 = 生命组件实例.受伤害(伤害量, self, 击退方向 * 击退力度)
+	
+	# 触发命中信号
+	命中.emit(目标, 伤害量)
+	
+	# 如果目标死亡，触发杀死信号
+	if 是否死亡:
+		杀死.emit(目标, 伤害量)
+
+
+func _停止持续伤害(目标: Node):
+	停止伤害.emit(目标)
+
+
+func _处理持续伤害(delta):
+	var 待移除列表 = []
+	
+	for 实体 in _受伤害实体.keys():
+		var 生命组件实例 = 生命组件._获取生命组件(实体)
+		if not 生命组件实例 or not 生命组件实例.是否存活():
+			待移除列表.append(实体)
+			continue
+		
+		# 更新计时器
+		_受伤害实体[实体] += delta
+		
+		# 检查是否达到伤害间隔
+		if _受伤害实体[实体] >= 伤害间隔:
+			_受伤害实体[实体] = 0.0
+			_造成持续伤害(实体, 生命组件实例)
+	
+	# 清理已死亡的实体
+	for 实体 in 待移除列表:
+		_受伤害实体.erase(实体)
+		_进入实体的伤害计时器.erase(实体)
+
+
+# ============ 阵营判定 ============
+
+func _可以造成伤害(目标: Node) -> bool:
+	# 获取目标的阵营组件
+	var 目标生命组件 = 生命组件._获取生命组件(目标)
+	if not 目标生命组件:
+		return false
+	
+	if not 目标生命组件.启用:
+		return false
+	
+	# 检查阵营关系
+	var 目标阵营 = 目标生命组件.阵营
+	var 攻击者阵营 = 自身阵营
+	
+	# 中立不能被攻击
+	if 目标阵营 == 生命组件.阵营类型.中立:
+		return false
+	
+	# 友伤检查
+	if not 友伤:
+		# 敌对中立：可攻击所有非中立阵营
+		if 攻击者阵营 == 生命组件.阵营类型.敌对中立:
+			return 目标阵营 != 生命组件.阵营类型.中立
+		
+		# 敌对中立会被所有非中立攻击
+		if 目标阵营 == 生命组件.阵营类型.敌对中立:
+			return 攻击者阵营 != 生命组件.阵营类型.中立
+		
+		# 相同阵营不能攻击
+		if 攻击者阵营 == 目标阵营:
+			return false
+	
+	# 不同阵营可以攻击
+	return true
+
+
+# ============ 辅助方法 ============
+
+func _计算击退方向(目标: Node) -> Vector2:
+	var 自身位置 = _获取自身位置()
+	var 目标位置 = _获取目标位置(目标)
+	
+	if 自身位置 == Vector2.ZERO or 目标位置 == Vector2.ZERO:
+		return Vector2.ZERO
+	
+	var 方向 = (目标位置 - 自身位置).normalized()
+	
+	# 应用击退距离
+	return 方向 * 击退距离
+
+
+func _获取自身位置() -> Vector2:
+	var 父节点 = get_parent()
+	if 父节点 is Node2D:
+		return 父节点.global_position
+	return Vector2.ZERO
+
+
+func _获取目标位置(目标: Node) -> Vector2:
+	if 目标 is Node2D:
+		return 目标.global_position
+	return Vector2.ZERO
+
+
+# ============ 公共方法 ============
+
+## 手动触发伤害
+func 手动造成伤害(目标: Node) -> bool:
+	if not 启用:
+		return false
+	
+	var 生命组件实例 = 生命组件._获取生命组件(目标)
+	if not 生命组件实例:
+		return false
+	
+	if not _可以造成伤害(目标):
+		return false
+	
+	_造成伤害(目标, 生命组件实例)
+	return true
+
+
+## 设置伤害量
+func 设置伤害量(新伤害: float):
+	伤害量 = max(0, 新伤害)
+
+
+## 设置伤害间隔
+func 设置伤害间隔(新间隔: float):
+	伤害间隔 = max(0.1, 新间隔)
+
+
+## 启用/禁用
+func 设置启用(状态: bool):
+	启用 = 状态
+	if not 启用:
+		_受伤害实体.clear()
+		_进入实体的伤害计时器.clear()
+
+
+## 获取当前目标数
+func 获取目标数() -> int:
+	return _受伤害实体.size()
+
+
+# ============ 调试方法 ============
+func _get_configuration_warnings() -> PackedStringArray:
+	var 警告 = PackedStringArray()
+	var 父节点 = get_parent()
+	if not (父节点 is Area2D or 父节点 is Area3D):
+		警告.append("伤害组件需要挂载在Area2D或Area3D节点下")
+	return 警告

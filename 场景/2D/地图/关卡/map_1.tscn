@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dn3gvmyh3mhsy"]
+
+[ext_resource type="PackedScene" uid="uid://db0w7181f2m37" path="res://场景/2D/装置/墙.tscn" id="1_7p5r0"]
+
+[node name="map1" type="Node2D" unique_id=708984934]
+
+[node name="墙" parent="." unique_id=1187106736 instance=ExtResource("1_7p5r0")]
+position = Vector2(-128, 128)
+
+[node name="墙2" parent="." unique_id=1365833799 instance=ExtResource("1_7p5r0")]
+position = Vector2(-112, 128)
+
+[node name="墙3" parent="." unique_id=1001872361 instance=ExtResource("1_7p5r0")]
+position = Vector2(-96, 128)
+
+[node name="墙4" parent="." unique_id=2067400796 instance=ExtResource("1_7p5r0")]
+position = Vector2(-80, 128)
+
+[node name="墙5" parent="." unique_id=282228610 instance=ExtResource("1_7p5r0")]
+position = Vector2(-64, 128)
+
+[node name="墙6" parent="." unique_id=1015587371 instance=ExtResource("1_7p5r0")]
+position = Vector2(-48, 128)
+
+[node name="墙7" parent="." unique_id=145451552 instance=ExtResource("1_7p5r0")]
+position = Vector2(-32, 128)
+
+[node name="墙8" parent="." unique_id=423022168 instance=ExtResource("1_7p5r0")]
+position = Vector2(-16, 128)
+
+[node name="墙9" parent="." unique_id=1131963078 instance=ExtResource("1_7p5r0")]
+position = Vector2(0, 128)
+
+[node name="墙10" parent="." unique_id=1183200857 instance=ExtResource("1_7p5r0")]
+position = Vector2(16, 128)
+
+[node name="墙11" parent="." unique_id=1309561212 instance=ExtResource("1_7p5r0")]
+position = Vector2(32, 128)
+
+[node name="墙12" parent="." unique_id=1434034130 instance=ExtResource("1_7p5r0")]
+position = Vector2(48, 128)
+
+[node name="墙13" parent="." unique_id=523367028 instance=ExtResource("1_7p5r0")]
+position = Vector2(64, 128)
+
+[node name="墙14" parent="." unique_id=1356559403 instance=ExtResource("1_7p5r0")]
+position = Vector2(80, 128)
+
+[node name="墙15" parent="." unique_id=1729062401 instance=ExtResource("1_7p5r0")]
+position = Vector2(96, 128)
+
+[node name="墙16" parent="." unique_id=2081870053 instance=ExtResource("1_7p5r0")]
+position = Vector2(112, 128)
+
+[node name="墙17" parent="." unique_id=1761674748 instance=ExtResource("1_7p5r0")]
+position = Vector2(-144, 128)
+
+[node name="墙18" parent="." unique_id=216573517 instance=ExtResource("1_7p5r0")]
+position = Vector2(128, 128)

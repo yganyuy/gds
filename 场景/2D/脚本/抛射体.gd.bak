@@ -1,0 +1,305 @@
+extends Node
+class_name 抛射体
+
+## 抛射体组件 - 管理抛射物的飞行行为
+
+# ============ 导出属性 ============
+@export var 飞行距离: float = 2000.0
+@export var 飞行加速度: float = 200.0
+@export var 飞行最大速度: float = 200.0
+@export var 可反弹: bool = false
+@export var 反弹次数: int = 0
+@export var 当前反弹次数: int = 0
+
+# ============ 内部变量 ============
+var 飞行方向: Vector2 = Vector2.ZERO
+var 当前速度: Vector2 = Vector2.ZERO
+var 飞行距离已走: float = 0.0
+var 是否飞行中: bool = false
+var 起始位置: Vector2 = Vector2.ZERO
+var 上一次位置: Vector2 = Vector2.ZERO
+
+# 碰撞检测
+var _碰撞形状: CollisionShape2D = null
+var _父节点: Node2D = null
+
+# ============ 信号定义 ============
+signal 飞行开始(方向: Vector2, 起始速度: Vector2)
+signal 达到最大速度(速度: Vector2)
+signal 反弹(碰撞点: Vector2, 碰撞法线: Vector2, 剩余反弹次数: int)
+signal 停止飞行(原因: String)  # 原因: "距离耗尽", "手动停止", "碰撞停止"
+signal 飞行更新(位置: Vector2, 速度: Vector2, 距离: float)
+
+
+func _ready():
+	_父节点 = get_parent()
+	if _父节点 is Node2D:
+		起始位置 = _父节点.global_position
+		上一次位置 = 起始位置
+		
+		# 尝试获取碰撞形状
+		_碰撞形状 = _查找碰撞形状(_父节点)
+	else:
+		push_error("抛射体必须挂载在Node2D节点下")
+
+
+func _physics_process(delta):
+	if not 是否飞行中:
+		return
+	
+	if not _父节点:
+		return
+	
+	# 更新飞行
+	_更新飞行(delta)
+
+
+# ============ 核心飞行逻辑 ============
+
+func _更新飞行(delta):
+	if 飞行方向.length() == 0:
+		return
+	
+	# 1. 计算速度
+	if 当前速度.length() < 飞行最大速度:
+		当前速度 += 飞行方向 * 飞行加速度 * delta
+		if 当前速度.length() > 飞行最大速度:
+			当前速度 = 当前速度.normalized() * 飞行最大速度
+			达到最大速度.emit(当前速度)
+	
+	# 2. 计算移动距离
+	var 移动距离 = 当前速度.length() * delta
+	
+	# 3. 更新位置
+	var 新位置 = _父节点.global_position + 当前速度 * delta
+	_父节点.global_position = 新位置
+	
+	# 4. 更新飞行距离
+	飞行距离已走 += 移动距离
+	上一次位置 = _父节点.global_position
+	
+	# 5. 发射飞行更新信号
+	飞行更新.emit(_父节点.global_position, 当前速度, 飞行距离已走)
+	
+	# 6. 检查距离限制
+	if 飞行距离已走 >= 飞行距离:
+		_停止飞行("距离耗尽")
+		return
+
+
+# ============ 碰撞处理 ============
+
+func _on_body_entered(body: Node):
+	if not 是否飞行中:
+		return
+	
+	_处理碰撞(body, null)
+
+
+func _on_area_entered(area: Area2D):
+	if not 是否飞行中:
+		return
+	
+	_处理碰撞(null, area)
+
+
+func _处理碰撞(body: Node, area: Area2D):
+	var 碰撞点 = _父节点.global_position
+	var 碰撞法线 = _计算碰撞法线(body, area)
+	
+	# 检查是否可以反弹
+	if 可反弹 and (反弹次数 == 0 or 当前反弹次数 < 反弹次数):
+		# 执行反弹
+		_执行反弹(碰撞点, 碰撞法线)
+		return
+	
+	# 无法反弹，停止飞行
+	_停止飞行("碰撞停止")
+
+
+func _执行反弹(碰撞点: Vector2, 碰撞法线: Vector2):
+	# 计算反射方向
+	var 反射方向 = 飞行方向.bounce(碰撞法线)
+	飞行方向 = 反射方向.normalized()
+	
+	# 更新速度方向
+	当前速度 = 飞行方向 * 当前速度.length()
+	
+	# 增加反弹计数
+	当前反弹次数 += 1
+	
+	# 调整位置避免卡墙
+	if _父节点:
+		_父节点.global_position = 碰撞点 + 碰撞法线 * 5
+	
+	# 触发反弹信号
+	var 剩余次数 = 反弹次数 - 当前反弹次数 if 反弹次数 > 0 else -1
+	反弹.emit(碰撞点, 碰撞法线, 剩余次数)
+
+
+func _计算碰撞法线(body: Node, area: Area2D) -> Vector2:
+	# 默认法线为反向飞行方向
+	var 默认法线 = -飞行方向.normalized()
+	
+	if body:
+		# 尝试从碰撞体获取法线
+		if body.has_method("get_collision_normal"):
+			return body.get_collision_normal()
+		
+		# 简单法线计算
+		var 自身位置 = _父节点.global_position
+		var 目标位置 = body.global_position if body is Node2D else 自身位置
+		var 方向 = (目标位置 - 自身位置).normalized()
+		if 方向.length() > 0:
+			return -方向
+	
+	if area:
+		var 自身位置 = _父节点.global_position
+		var 目标位置 = area.global_position if area is Node2D else 自身位置
+		var 方向 = (目标位置 - 自身位置).normalized()
+		if 方向.length() > 0:
+			return -方向
+	
+	return 默认法线
+
+
+# ============ 公共方法 ============
+
+## 开始飞行
+func 开始飞行(方向: Vector2, 起始速度: float = 0.0):
+	if not _父节点:
+		push_error("抛射体没有父节点")
+		return
+	
+	if 是否飞行中:
+		return
+	
+	# 重置状态
+	_重置状态()
+	
+	# 设置飞行参数
+	飞行方向 = 方向.normalized()
+	当前速度 = 飞行方向 * min(起始速度, 飞行最大速度)
+	起始位置 = _父节点.global_position
+	上一次位置 = 起始位置
+	飞行距离已走 = 0
+	当前反弹次数 = 0
+	是否飞行中 = true
+	
+	# 连接碰撞信号
+	_连接碰撞信号()
+	
+	# 触发飞行开始信号
+	飞行开始.emit(飞行方向, 当前速度)
+
+
+## 停止飞行
+func 停止飞行():
+	_停止飞行("手动停止")
+
+
+## 获取飞行状态
+func 获取飞行状态() -> Dictionary:
+	return {
+		"是否飞行中": 是否飞行中,
+		"飞行距离已走": 飞行距离已走,
+		"飞行距离": 飞行距离,
+		"当前速度": 当前速度,
+		"速度大小": 当前速度.length(),
+		"飞行方向": 飞行方向,
+		"当前反弹次数": 当前反弹次数,
+		"最大反弹次数": 反弹次数,
+		"位置": _父_node.global_position if _父节点 else Vector2.ZERO
+	}
+
+
+## 设置飞行参数（在飞行前调用）
+func 设置飞行参数(新距离: float = -1, 新加速度: float = -1, 新最大速度: float = -1):
+	if 新距离 >= 0:
+		飞行距离 = 新距离
+	if 新加速度 >= 0:
+		飞行加速度 = 新加速度
+	if 新最大速度 >= 0:
+		飞行最大速度 = 新最大速度
+
+
+## 设置反弹参数
+func 设置反弹参数(启用: bool, 次数: int = 0):
+	可反弹 = 启用
+	反弹次数 = max(0, 次数)
+
+
+## 获取飞行进度（0-1）
+func 获取飞行进度() -> float:
+	if 飞行距离 <= 0:
+		return 0
+	return clamp(飞行距离已走 / 飞行距离, 0, 1)
+
+
+## 获取剩余飞行距离
+func 获取剩余距离() -> float:
+	return max(0, 飞行距离 - 飞行距离已走)
+
+
+# ============ 内部方法 ============
+
+func _重置状态():
+	是否飞行中 = false
+	飞行方向 = Vector2.ZERO
+	当前速度 = Vector2.ZERO
+	飞行距离已走 = 0
+	当前反弹次数 = 0
+
+
+func _停止飞行(原因: String):
+	if not 是否飞行中:
+		return
+	
+	是否飞行中 = false
+	_断开碰撞信号()
+	停止飞行.emit(原因)
+
+
+func _连接碰撞信号():
+	var 父节点 = _父节点
+	if not 父节点:
+		return
+	
+	# 查找Area2D子节点
+	for 子节点 in 父节点.get_children():
+		if 子节点 is Area2D:
+			子节点.body_entered.connect(_on_body_entered)
+			子节点.area_entered.connect(_on_area_entered)
+
+
+func _断开碰撞信号():
+	var 父节点 = _父节点
+	if not 父节点:
+		return
+	
+	for 子节点 in 父节点.get_children():
+		if 子节点 is Area2D:
+			if 子节点.body_entered.is_connected(_on_body_entered):
+				子节点.body_entered.disconnect(_on_body_entered)
+			if 子节点.area_entered.is_connected(_on_area_entered):
+				子节点.area_entered.disconnect(_on_area_entered)
+
+
+func _查找碰撞形状(节点: Node) -> CollisionShape2D:
+	for 子节点 in 节点.get_children():
+		if 子节点 is CollisionShape2D:
+			return 子节点
+		if 子节点 is Area2D:
+			for 孙节点 in 子节点.get_children():
+				if 孙节点 is CollisionShape2D:
+					return 孙节点
+	return null
+
+
+# ============ 调试方法 ============
+func _get_configuration_warnings() -> PackedStringArray:
+	var 警告 = PackedStringArray()
+	var 父节点 = get_parent()
+	if not (父节点 is Node2D):
+		警告.append("抛射体必须挂载在Node2D节点下")
+	return 警告

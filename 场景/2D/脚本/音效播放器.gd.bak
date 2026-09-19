@@ -1,0 +1,31 @@
+extends Node
+
+@export var 同时播放音效上限:int=10
+@export var 音效文件:Array[AudioStream]=[]
+@export_enum("随机", "固定查找", "仅第一个") var 类型 :String="随机"
+@export var 第x个 :int=1
+@export var 音量:float=100
+@export var 音调:float=1.0
+var 正在播放音效数 :int =0
+var 当前设置的音频:AudioStream=null
+var 音频表文件总数:int=1
+
+func 播放音效():
+	#获取音效
+	音频表文件总数=音效文件.size()
+	if 音效文件!=[] and 正在播放音效数<=同时播放音效上限:
+		match 类型:
+			"随机":
+				var 随机的第x个=randi_range(0,音频表文件总数-1)
+				当前设置的音频=音效文件[随机的第x个]
+			"固定查找":
+				当前设置的音频=音效文件[第x个-1]
+			"仅第一个":
+				当前设置的音频=音效文件[0]
+		#创建音效
+		var 音播=AudioStreamPlayer.new()
+		音播.stream=当前设置的音频
+		音播.volume_db=音量
+		正在播放音效数+=1
+		
+	pass

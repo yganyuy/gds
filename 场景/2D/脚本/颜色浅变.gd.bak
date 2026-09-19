@@ -1,0 +1,68 @@
+extends Node
+class_name 浅变颜色
+@export var 浅变时长 :float = 1
+@export var 浅变颜色 :Color
+@export var 目标节点:CanvasItem##空=父节点
+@export var 自动填充目标节点为父级:bool=true
+@export var 是否恢复:bool=false
+
+var 父级 =get_parent()
+var 已过时长 :float=0
+var 原本颜色:Color
+var 执行中:bool =false
+var 当前动画: Tween
+var 退出脚本:bool = false
+
+signal 当浅变开始时
+signal 当浅变中止时
+signal 当浅变结束时
+signal 当记录颜色时
+
+func 是否已执行():
+	if 执行中==false:
+		执行中=true
+		退出脚本=false
+	elif 执行中==true:
+		退出脚本=true
+	pass
+
+func 查询节点存在():
+	if 目标节点==null and 自动填充目标节点为父级==false:
+		退出脚本=true
+	elif 自动填充目标节点为父级==true and 目标节点==null:
+		获取节点()
+
+func 获取节点():
+	if 目标节点==null:
+		目标节点=父级
+		退出脚本=false
+
+func 记录初始颜色():
+	查询节点存在()
+	if 退出脚本==true:
+		return
+	原本颜色=目标节点.modulate
+	当记录颜色时.emit()
+	print(原本颜色)
+
+func 执行浅变():
+	是否已执行()
+	查询节点存在()
+	if 退出脚本 == true:
+		return
+	当浅变开始时.emit()
+	
+	var 动画 = get_tree().create_tween()
+	动画.tween_property(目标节点, "modulate", 浅变颜色, 浅变时长)
+	# 比如你想变某个节点的颜色，就把 "属性名字" 写成 "modulate" 或 "color"
+	当前动画=动画
+	执行中=false
+	当浅变结束时.emit()
+
+func 中断浅变():
+	if 当前动画!=null:
+		当前动画.kill()
+		执行中 = false
+		if 是否恢复==true:
+			目标节点.modulate = 原本颜色
+		当浅变中止时.emit()

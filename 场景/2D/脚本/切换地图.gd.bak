@@ -1,0 +1,4 @@
+extends Node
+class_name 切换地图
+
+@export var 目标地图:Array[PackedScene]

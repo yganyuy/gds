@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://db0w7181f2m37"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_euocq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wvhbo"]
+
+[node name="墙" type="StaticBody2D" unique_id=1187106736]
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=481520992]
+shape = SubResource("RectangleShape2D_euocq")
+metadata/_edit_lock_ = true
+
+[node name="动画精灵" type="AnimatedSprite2D" parent="." unique_id=328930269]
+sprite_frames = SubResource("SpriteFrames_wvhbo")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="." unique_id=139300086]
+offset_left = -8.0
+offset_top = -11.0
+offset_right = 8.0
+offset_bottom = 12.0
+text = "墙"

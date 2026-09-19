@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://cg8k15bxy1e7v"]
+
+[ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="1_tffqf"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/切换到目标UI.gd" id="2_gfo1s"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1065702063]
+
+[node name="控件" type="Control" parent="." unique_id=734800443]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="创建房间" type="TextureButton" parent="控件" unique_id=1332074112]
+custom_minimum_size = Vector2(3.545, 2.345)
+layout_mode = 0
+offset_left = 192.0
+offset_top = 240.0
+offset_right = 416.0
+offset_bottom = 446.0
+
+[node name="精灵" type="Sprite2D" parent="控件/创建房间" unique_id=2053051305]
+position = Vector2(112, 104)
+texture = ExtResource("1_tffqf")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="控件/创建房间/精灵" unique_id=1383774548]
+oversampling_with_scale = 2
+offset_left = -111.99999
+offset_top = -48.0
+offset_right = 21.000008
+offset_bottom = 7.0
+scale = Vector2(1.67, 1.67)
+text = "创建房间 "
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="节点" type="Node" parent="控件" unique_id=58782133]
+script = ExtResource("2_gfo1s")
+"备用方法" = "res://场景/2D/UI/aaa.tscn"
+
+[connection signal="button_down" from="控件/创建房间" to="控件/节点" method="执行切UI"]

@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://hgenc42oax3w"]
+
+[ext_resource type="Script" uid="uid://dply11fwywktn" path="res://场景/联机/创建房间.gd" id="1_6h8py"]
+[ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="2_70hse"]
+[ext_resource type="PackedScene" uid="uid://b2i1nfcp3dpaw" path="res://场景/2D/角色/玩家.tscn" id="2_x3v7v"]
+[ext_resource type="Script" uid="uid://btu4j8wddwsqk" path="res://场景/2D/脚本/直接生成物体节点.gd" id="4_cmq7g"]
+[ext_resource type="PackedScene" uid="uid://dn3gvmyh3mhsy" path="res://场景/2D/地图/关卡/map_1.tscn" id="5_cmq7g"]
+[ext_resource type="Script" uid="uid://dkpmcnnegrh5d" path="res://场景/2D/脚本/摄像头管理.gd" id="8_bdeds"]
+[ext_resource type="Script" uid="uid://vswq7h2x7b33" path="res://场景/2D/脚本/类插件/等待节点.gd" id="8_e5ni1"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/切换到目标UI.gd" id="9_e5ni1"]
+
+[node name="场景2" type="Node2D" unique_id=638858524]
+
+[node name="画布层" type="CanvasLayer" parent="." unique_id=918379607]
+
+[node name="控件" type="Control" parent="画布层" unique_id=1259029379]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="创建房间" type="TextureButton" parent="画布层/控件" unique_id=912422096]
+custom_minimum_size = Vector2(3.545, 2.345)
+layout_mode = 0
+offset_left = 192.0
+offset_top = 240.0
+offset_right = 416.0
+offset_bottom = 446.0
+script = ExtResource("1_6h8py")
+
+[node name="精灵" type="Sprite2D" parent="画布层/控件/创建房间" unique_id=1001927608]
+position = Vector2(112, 104)
+texture = ExtResource("2_70hse")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="画布层/控件/创建房间/精灵" unique_id=1810992734]
+oversampling_with_scale = 2
+offset_left = -111.99999
+offset_top = -48.0
+offset_right = 21.000008
+offset_bottom = 7.0
+scale = Vector2(1.67, 1.67)
+text = "创建房间 "
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="加入房间" type="TextureButton" parent="画布层/控件" unique_id=2077281235]
+custom_minimum_size = Vector2(3.545, 2.345)
+layout_mode = 0
+offset_left = 552.0
+offset_top = 248.0
+offset_right = 776.0
+offset_bottom = 454.0
+script = ExtResource("1_6h8py")
+
+[node name="精灵" type="Sprite2D" parent="画布层/控件/加入房间" unique_id=833228640]
+position = Vector2(112, 104)
+texture = ExtResource("2_70hse")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="画布层/控件/加入房间/精灵" unique_id=686059499]
+oversampling_with_scale = 2
+offset_left = -111.99999
+offset_top = -48.0
+offset_right = 21.000008
+offset_bottom = 7.0
+scale = Vector2(1.67, 1.67)
+text = "加入房间"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="节点" type="Node" parent="." unique_id=1714715282 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("4_cmq7g")
+"生成的场景" = ExtResource("2_x3v7v")
+"目标节点" = NodePath("..")
+
+[node name="节点2" type="Node" parent="." unique_id=1247827442 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("4_cmq7g")
+"生成的场景" = ExtResource("5_cmq7g")
+"目标节点" = NodePath("..")
+
+[node name="摄像头管理" type="Node" parent="." unique_id=1727449210]
+script = ExtResource("8_bdeds")
+
+[node name="等待节点" type="Node" parent="." unique_id=1194657679]
+script = ExtResource("8_e5ni1")
+
+[node name="切换到目标UI" type="Node" parent="." unique_id=295701992]
+script = ExtResource("9_e5ni1")
+"备用方法" = "res://场景/2D/UI/aaa.tscn"
+
+[connection signal="button_down" from="画布层/控件/创建房间" to="画布层/控件/创建房间" method="_on_button_down"]
+[connection signal="成功创建房间时" from="画布层/控件/创建房间" to="节点" method="直接生成物体"]
+[connection signal="成功创建房间时" from="画布层/控件/创建房间" to="节点2" method="直接生成物体"]
+[connection signal="成功创建房间时" from="画布层/控件/创建房间" to="切换到目标UI" method="执行切UI"]
+[connection signal="button_down" from="画布层/控件/加入房间" to="画布层/控件/加入房间" method="_on_button_down"]
+[connection signal="加入房间时" from="画布层/控件/加入房间" to="等待节点" method="执行"]
+[connection signal="加入房间时" from="画布层/控件/加入房间" to="切换到目标UI" method="执行切UI"]
+[connection signal="等待结束后触发" from="等待节点" to="节点" method="直接生成物体"]
