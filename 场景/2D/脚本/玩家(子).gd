@@ -17,8 +17,7 @@ func _ready() -> void:
 		if rpc联机方法.wang_luo!=null:
 			if rpc联机方法.wang_luo_id!=玩家节点.get_meta("pid"):
 				return
-		if 玩家当前角色.玩家角色.has(玩家节点)==false:
-			#玩家当前角色.玩家角色.append(玩家节点)#append=在末尾插入
+		if 玩家当前角色.玩家角色.has(玩家节点)==false:		#玩家当前角色.玩家角色.append(玩家节点)#append=在末尾插入
 			玩家当前角色.玩家角色.insert(0,玩家节点)
 		print("ppppppppppppppppppppppppp",玩家当前角色.玩家角色)
 	

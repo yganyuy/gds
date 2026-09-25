@@ -34,17 +34,19 @@ func _ready():
 		属性同步需要调用的节点=属性设置需要的依赖
 	类型判断()
 
+func _physics_process(delta: float) -> void:
+	类型判断()
 #______________________核心判断_________________________
 
-func 模式设置():
+
+func 类型判断():
+	#判段联机状态
 	if 网络管理器!=null:
 		是联机么=true
 	else :
 		是联机么=false
-
-func 类型判断():
-	#判段联机状态
-	模式设置()
+	
+	
 	if 是联机么==true:
 		if 网络管理器.shi_fou_chuang_jian_le==false and 网络管理器.shi_fou_jia_ru_fang_jian_le==false:
 			return

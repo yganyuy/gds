@@ -1,0 +1,37 @@
+extends Node
+class_name 物理组件
+
+## 速度向量 (X,Y)
+@export var 速度向量: Vector2 = Vector2.ZERO
+## 重力 (浮点)
+@export var 重力: float = 980.0
+## 质量 (浮点) 默认为父节点
+@export var 质量: float = 1.0
+
+@export var 启用:bool=true
+
+## 目标应用节点，默认为父节点
+var 目标节点: Node2D = null
+
+func _ready() -> void:
+	# 寻找父节点应用
+	目标节点 = get_parent() as Node2D
+	if 目标节点 == null:
+		push_error("物理组件必须挂载在 Node2D 节点下")
+		return
+		
+
+func _physics_process(delta: float) -> void:
+	
+	if 目标节点==null or 启用 == false: return
+	# 应用重力
+	速度向量.y += 重力 * delta *质量
+	# 实时进行 move_... 指令
+	if 目标节点 is CharacterBody2D:
+		# 利用 Godot 自带的物理系统
+		目标节点.velocity = 速度向量
+		目标节点.move_and_slide()
+		速度向量 = 目标节点.velocity # 同步碰撞后的实际速度
+	else:
+		# 普通 Node2D 的直接位移
+		目标节点.position += 速度向量 * delta

@@ -1,0 +1,69 @@
+extends Node
+class_name 移动组件
+
+## 最小速度 px/s [int] (用于减速停止的判断阈值)
+@export var 最小速度: int = 0
+## 最大速度 px/s [int]
+@export var 最大速度: int = 300
+## 加速度 px/s² [int]
+@export var 加速度: int = 1000
+## 减速度 px/s² [int]
+@export var 减速度: int = 1500
+## 引用的物理组件 [Node]
+@export var 引用的物理组件: 物理组件 = null
+
+## 当前移动方向（由开始移动传入）
+var 当前输入方向: Vector2 = Vector2.ZERO
+## 核心状态：是否处于正在移动的状态
+var 正在移动: bool = false
+
+func _ready() -> void:
+	# 依赖物理组件，如果开始时调用物理组件时找不到就生成一个物理组件并设置属性
+	if 引用的物理组件 == null:
+		var 父节点 = get_parent()
+		if 父节点:
+			# 先在兄弟节点里找
+			for 子节点 in 父节点.get_children():
+				if 子节点 is 物理组件:
+					引用的物理组件 = 子节点
+					break
+			
+			# 找不到就生成一个物理组件并设置属性
+			if 引用的物理组件 == null:
+				引用的物理组件 = 物理组件.new()
+				# 确保物理组件挂载在父节点下（如果是CharacterBody2D，通常在 _ready 时加进去）
+				父节点.add_child(引用的物理组件)
+				print("[移动组件] 未找到物理组件，已自动生成并挂载")
+
+func _physics_process(delta: float) -> void:
+	if 引用的物理组件 == null: return
+	
+	# 判断自身是否移动用 [加速度]
+	if 正在移动:
+		# 【开始移动时】：持续向目标速度逼近（注意：此时绝对不会触发减速！）
+		var 目标速度 = 当前输入方向 * 最大速度
+		# 只要没到达最大速度，就一直在加速
+		引用的物理组件.速度向量 = 引用的物理组件.速度向量.move_toward(目标速度, 加速度 * delta)
+		
+		# 如果目标速度为0（比如指令传了零向量，但没调结束移动），
+		# 逻辑上它会以加速度逼近0，而不是用减速度。这符合“不触发减速”的字面要求。
+	else:
+		# 【结束移动后】：触发减速逻辑
+		引用的物理组件.速度向量 = 引用的物理组件.速度向量.move_toward(Vector2.ZERO, 减速度 * delta)
+		
+		# 速度降低到最小速度以下时，直接归零，防止滑动
+		if 引用的物理组件.速度向量.length() <= 最小速度:
+			引用的物理组件.速度向量 = Vector2.ZERO
+
+## 开始移动（接收输入向量，比如 Input.get_vector() 的返回值，或 AI 算出的方向）
+## 注意：调用此方法并不会触发减速。只要不调 结束移动()，它就会一直保持移动意图！
+func 开始移动(输入向量: Vector2) -> void:
+	if 输入向量.length() > 0:
+		当前输入方向 = 输入向量.normalized()
+	else:
+		当前输入方向 = Vector2.ZERO
+	正在移动 = true
+
+## 结束移动（只有调用这个方法，才会触发减速度让物体平滑停下来）
+func 结束移动() -> void:
+	正在移动 = false

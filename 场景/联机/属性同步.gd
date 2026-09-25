@@ -3,7 +3,7 @@ class_name 同步属性##这是一个自动创建的 属性同步器
 
 @export var 同步方式: int = 1 ##0=不进行网络,1=自动同步,2=改变时进行同步 3=同步多少秒
 @export var 初始化同步: bool = true
-@export var 次每秒: int = 50
+@export var 次每秒: int = 6
 @export var 属性配置: Node = null
 @export var 同步多少秒:float=3
 

@@ -25,6 +25,7 @@ action_down = &"s"
 script = ExtResource("1_1bnae")
 "遥感图片" = NodePath("精灵")
 metadata/_edit_use_anchors_ = true
+metadata/_edit_lock_ = true
 
 [node name="底座" type="Sprite2D" parent="." unique_id=633942941]
 position = Vector2(85.87946, 76.84963)
@@ -37,11 +38,13 @@ self_modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.07805108, 0.08718957)
 texture = ExtResource("3_m0uke")
 offset = Vector2(1244.8677, 996.7163)
+metadata/_edit_lock_ = true
 
 [node name="精灵" type="Sprite2D" parent="." unique_id=643788342]
 scale = Vector2(0.295, 0.295)
 texture = ExtResource("2_dfj1d")
 centered = false
 offset = Vector2(168.27809, 155.33356)
+metadata/_edit_lock_ = true
 
 [connection signal="flicked" from="." to="." method="_on_flicked"]

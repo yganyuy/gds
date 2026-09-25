@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "example\\x64\\Debug\\example.obj",
+            "outputs": [
+                "example\\x64\\Debug\\example.h.ifc.dt.module.json",
+                "example\\x64\\Debug\\example.h.ifc.dt.d.json",
+                "example\\x64\\Debug\\example.pch"
+            ],
+            "requires": []
+        }
+    ]
+}

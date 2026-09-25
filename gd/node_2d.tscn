@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://iogvp51va7au"]
+
+[ext_resource type="Script" uid="uid://fxl85tvec6fu" path="res://gd/hiwod.gd" id="1_oorpy"]
+[ext_resource type="Script" uid="uid://cyau4xumuhue7" path="res://场景/2D/脚本/临时脚本/gdenode查找.gd" id="2_rgjhs"]
+[ext_resource type="Script" uid="uid://clliftlxu5cxq" path="res://场景/2D/脚本/组件/生命组件.gd" id="3_3klw1"]
+
+[node name="Node2D" type="Node2D" unique_id=2001271878]
+script = ExtResource("1_oorpy")
+
+[node name="节点" type="Node" parent="." unique_id=677617070]
+script = ExtResource("2_rgjhs")
+
+[node name="生命组件" type="Node" parent="节点" unique_id=1681978111]
+script = ExtResource("3_3klw1")
+
+[node name="节点2" type="Node2D" parent="." unique_id=1572938595]
+script = ExtResource("1_oorpy")
