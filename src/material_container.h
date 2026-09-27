@@ -1,0 +1,64 @@
+#ifndef MATERIAL_CONTAINER_H
+#define MATERIAL_CONTAINER_H
+
+#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/core/class_db.hpp>
+#include <vector>
+#include <unordered_map>
+#include <string>
+#include <mutex>
+
+namespace godot {
+
+// 定义紧凑的数据结构（替代平行数组）
+struct MaterialData {
+    String path;          // 素材路径
+    float capacity;       // 单个素材占容
+    int32_t quantity;     // 素材数量
+};
+
+class MaterialContainer : public Node {
+    GDCLASS(MaterialContainer, Node)
+
+private:
+    // 核心数据存储 (连续内存)
+    std::vector<MaterialData> data_array;
+    
+    // 索引缓存：路径 -> 数组索引 (将查找复杂度降到 O(1))
+    std::unordered_map<std::string, size_t> path_to_index;
+    
+    // 线程安全互斥锁
+    std::mutex data_mutex;
+    
+    // 容量数据
+    float max_capacity = 1000.0f;     // 最大容量
+    float current_capacity = 0.0f;    // 当前容量
+
+protected:
+    static void _bind_methods();
+
+public:
+    MaterialContainer();
+    ~MaterialContainer();
+
+    // ========== 核心接口 (英文名对应原中文函数) ==========
+    
+    // 获取某物 (原: 获取某物)
+    void add_material(const String &p_path, float p_capacity, int32_t p_quantity);
+    
+    // 丢弃某物 (原: 丢弃某物)
+    void remove_material(const String &p_path, int32_t p_quantity);
+    
+    // 查找某物 (原: 查找某物) - 支持传索引(int)或路径(String)
+    String find_material(const Variant &p_attribute) const;
+
+    // ========== 属性 Get/Set ==========
+    void set_max_capacity(float p_capacity);
+    float get_max_capacity() const;
+    float get_current_capacity() const;
+};
+
+} // namespace godot
+
+#endif

@@ -1,7 +1,10 @@
 [configuration]
 entry_symbol = "example_library_init"
+
 compatibility_minimum = "4.1"
 reloadable = true
 
 [libraries]
 windows.debug.x86_64 = "res://addons/bin/gdexample.windows.template_debug.x86_64.dll"
+android.debug.arm64 = "res://addons/bin/gdexample.android.template_debug.arm64.so"
+android.release.arm64 = "res://addons/bin/gdexample.android.template_release.arm64.so"

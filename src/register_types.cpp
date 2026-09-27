@@ -1,7 +1,7 @@
 #include "register_types.h"
 #include "my_locator.h"    // 引入我们的查找器头文件
 #include "example.h"
-
+#include "material_container.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -16,6 +16,7 @@ void initialize_my_module(ModuleInitializationLevel p_level) {
     // 注册类名为 CXT
     GDREGISTER_CLASS(CXT);
     GDREGISTER_CLASS(Example);
+    GDREGISTER_CLASS(MaterialContainer);
 }
 
 void uninitialize_my_module(ModuleInitializationLevel p_level) {
