@@ -43,13 +43,18 @@ func rpc_接收场景映射(映射: Dictionary):
 		var 网络状态同步器:同步属性 = null
 		if _实体功能.属性同步方式 == 2:
 			网络状态同步器 = 同步属性.new()
-		if 网络状态同步器 != null:
+		if 网络状态同步器 != null and rpc联机方法.wang_luo_id==1:
 			生成物.add_child(网络状态同步器)
-		get_tree().current_scene.add_child(生成物)
+			网络状态同步器.name=str(网络状态同步器.name)+str(ID)
+		var 父节点路径: NodePath = 数据.get("父节点路径", NodePath(""))   # ★
+		var 实际父节点: Node = 查找挂载父节点(父节点路径)               # ★
+		实际父节点.add_child(生成物)                                # ★
 		if _实体功能.物体表 != null:
 			_实体功能.物体表.加入物体(生成物, ID)
 		_实体功能.生成时.emit(生成物, ID)
-		print("[客户端] 场景重建完成，物体数:", 映射.size())
+		生成物.name=str(生成物.name)+str(ID)
+		
+	print("[客户端] 场景重建完成，物体数:", 映射.size())
 	_实体功能.初始化场景已经同步=true
 
 
@@ -74,3 +79,12 @@ func rpc_请求场景映射(id:int):
 		return
 	var 请求者 = id
 	发送场景映射给客户端(请求者)
+
+# ★ 独立函数：根据服务端给出的父节点路径查找挂载点，找不到则回退到 current_scene
+func 查找挂载父节点(父节点路径: NodePath) -> Node:
+	if 父节点路径 != NodePath(""):
+		var 找到的节点 = get_node_or_null(父节点路径)
+		if 找到的节点 != null:
+			return 找到的节点
+		push_warning("[客户端] 找不到父节点路径: %s，回退到 current_scene" % str(父节点路径))
+	return get_tree().current_scene

@@ -11,54 +11,62 @@
 
 namespace godot {
 
-// 定义紧凑的数据结构（替代平行数组）
-struct MaterialData {
-    String path;          // 素材路径
-    float capacity;       // 单个素材占容
-    int32_t quantity;     // 素材数量
-};
+    // ===== 一条物品数据 =====
+    struct WuPinShuJu {
+        String  luJing;      // 路径
+        float   zhanRong;    // 单件占容
+        int32_t shuLiang;    // 数量
+    };
 
-class MaterialContainer : public Node {
-    GDCLASS(MaterialContainer, Node)
+    // ===== 背包容器 =====
+    class MaterialContainer : public Node {
+        GDCLASS(MaterialContainer, Node)   // 类名保持英文，你的 背包组件.gd 依赖它
 
-private:
-    // 核心数据存储 (连续内存)
-    std::vector<MaterialData> data_array;
-    
-    // 索引缓存：路径 -> 数组索引 (将查找复杂度降到 O(1))
-    std::unordered_map<std::string, size_t> path_to_index;
-    
-    // 线程安全互斥锁
-    std::mutex data_mutex;
-    
-    // 容量数据
-    float max_capacity = 1000.0f;     // 最大容量
-    float current_capacity = 0.0f;    // 当前容量
+    private:
+        // --- 核心数据 ---
+        std::vector<WuPinShuJu>                 shuJuBiao;     // 所有物品
+        std::unordered_map<std::string, size_t> luJingSuoYin;  // 路径 → 下标
+        mutable std::mutex shuJuSuo;     // 线程锁
 
-protected:
-    static void _bind_methods();
+        // --- 容量 ---
+        float zuiDaRongLiang = 1000.0f;
+        float dangQianRongLiang = 0.0f;
 
-public:
-    MaterialContainer();
-    ~MaterialContainer();
+        // --- 同步缓存 ---
+        // wuPinYouBianHua = true  → 数据变了，下次 get 要重建缓存
+        // wuPinYouBianHua = false → 数据没变，直接返回缓存
+        bool  wuPinYouBianHua = true;
+        Array wuPinHuanCun;
 
-    // ========== 核心接口 (英文名对应原中文函数) ==========
-    
-    // 获取某物 (原: 获取某物)
-    void add_material(const String &p_path, float p_capacity, int32_t p_quantity);
-    
-    // 丢弃某物 (原: 丢弃某物)
-    void remove_material(const String &p_path, int32_t p_quantity);
-    
-    // 查找某物 (原: 查找某物) - 支持传索引(int)或路径(String)
-    String find_material(const Variant &p_attribute) const;
+    protected:
+        static void _bind_methods();
 
-    // ========== 属性 Get/Set ==========
-    void set_max_capacity(float p_capacity);
-    float get_max_capacity() const;
-    float get_current_capacity() const;
-};
+        Array _构建物品数组();   // 调用前必须持锁
+        void  _标记已变化();     // 调用前必须持锁
+
+    public:
+        MaterialContainer() = default;
+        ~MaterialContainer() = default;
+
+        // ===== 核心运算 =====
+        bool    add_material(const String& luJing, float zhanRong, int32_t shuLiang);
+        int32_t remove_material(const String& luJing, int32_t shuLiang);
+        String  find_material(const Variant& shuXing) const;
+
+        // ===== 你自己想加的辅助接口（可删可留） =====
+        int32_t get_material_quantity(const String& luJing) const;
+        void    clear_all();
+
+        // ===== 容量 =====
+        void  set_max_capacity(float zhi);
+        float get_max_capacity() const;
+        void  set_current_capacity(float zhi);   // ← 新增：同步系统要写入
+        float get_current_capacity() const;
+
+        // ===== 网络同步（属性名 items_sync 给 GDScript 用） =====
+        Array get_items_sync();
+        void  set_items_sync(const Array& shuJu);
+    };
 
 } // namespace godot
-
 #endif

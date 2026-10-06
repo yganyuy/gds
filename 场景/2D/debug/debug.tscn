@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cfbxetas217ad"]
+
+[ext_resource type="Script" uid="uid://dptdtvaj284rd" path="res://场景/2D/脚本/组件/物理组件.gd" id="1_11sxn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=130211891]
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=457345799]
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="物理组件" type="Node" parent="." unique_id=1128253238]
+script = ExtResource("1_11sxn")
+"重力" = 0.0
+"质量" = 0.0

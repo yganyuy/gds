@@ -3,6 +3,7 @@ class_name 直接生成物体节点
 @export var 初始时生成:bool=false
 @export var 生成的场景:PackedScene=null
 @export var 目标节点:Node2D=null
+#@export var 向量偏移:Vector2
 # Called when the node enters the scene tree for the first time.
 var 重试次数:int=20
 signal 生成时(物体:Node)

@@ -36,7 +36,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if 目标节点 == null: return
-	
+	if rpc联机方法.wang_luo_id!=1 and rpc联机方法.wang_luo_id!=0:return##保证尽在服务端时运行 
 	# 1. 应用重力（只有平台跳跃等需要重力的模式才加）
 	if 当前物理模式 == 物理模式.平台跳跃:
 		速度向量.y += 重力 * delta

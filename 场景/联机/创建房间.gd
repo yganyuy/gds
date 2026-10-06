@@ -24,7 +24,7 @@ func _on_button_down() -> void:
 	#print("2",rpc联机方法.Jia_ru_fang_jian)
 	
 	await get_tree().create_timer(0.1).timeout
-	
+	#
 	if control ==null:
 		print("control==null")
 		return

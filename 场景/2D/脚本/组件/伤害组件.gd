@@ -96,11 +96,8 @@ func _on_area_exited(area: Area2D):
 # ============ 核心逻辑 ============
 
 func _实体进入(实体: Node):
-	if not 启用:
-		return
-	
-	if not _可以造成伤害(实体):
-		return
+	if not 启用:return
+	if not _可以造成伤害(实体):return
 	
 	# 获取生命组件
 	var 生命组件实例 = 生命组件._获取生命组件(实体)
@@ -160,7 +157,8 @@ func _造成伤害(目标: Node, 生命组件实例: 生命组件):
 	
 	if not 生命组件实例.是否存活():
 		return
-	
+	if rpc联机方法.wang_luo_id!=1 and rpc联机方法.wang_luo_id!=0:
+		return
 	# 计算击退方向
 	var 击退方向 = _计算击退方向(目标)
 	

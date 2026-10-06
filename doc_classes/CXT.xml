@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CXT" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		高性能组件查找器。按脚本文件名或类名在节点树中递归查找。
+	</brief_description>
+	<description>
+		从指定节点出发，深度优先遍历其子树，找到第一个"脚本文件名或 [code]class_name[/code] 匹配目标"的节点并返回。
+
+		[b]匹配规则（按优先级）：[/b]
+		[codeblock]
+		1. 节点脚本文件名（如 "移动组件.gd" → 匹配 "移动组件"）—— 性能最好
+		2. 节点脚本的 class_name（如 class_name 移动组件）—— 需 p_only_script_name = false
+		[/codeblock]
+
+		[b]性能建议：[/b]
+		若组件脚本都写有 [code]class_name[/code]，可传 [code]p_only_script_name = true[/code] 跳过 class_name 检查，速度更快。
+
+		[b]典型用法：[/b]
+		[codeblock]
+		# 从实体出发找"移动组件"，无限深度，同时匹配脚本名和 class_name
+		var 组件 = 实体功能.查找器.FIND(实体, "移动组件", -1, false)
+		[/codeblock]
+
+		[b]注意事项：[/b]
+		返回的是原始 [Node] 指针（非引用计数类型），调用方需保证起始节点在调用期间有效。
+	</description>
+	<tutorials>
+	</tutorials>
+
+	<!-- ==================== 方法 ==================== -->
+	<methods>
+
+		<method name="FIND">
+			<return type="Node" />
+			<param index="0" name="node" type="Node" />
+			<param index="1" name="target_name" type="String" />
+			<param index="2" name="max_depth" type="int" default="-1" />
+			<param index="3" name="only_script_name" type="bool" default="false" />
+			<description>
+				从 [param node] 出发深度优先查找第一个匹配的节点。
+
+				[param node] 起始节点。必须非空，否则会触发断言失败。
+
+				[param target_name] 目标名。会匹配节点的脚本文件名（不含扩展名），若 [param only_script_name] 为 [code]false[/code] 也匹配脚本的 [code]class_name[/code]。
+
+				[param max_depth] 最大查找深度，每下探一层减一。[code]-1[/code] 表示无限深度（默认）。为 [code]0[/code] 时不查子节点。
+
+				[param only_script_name] 是否仅按脚本文件名匹配。
+				[code]true[/code] = 只比对脚本文件名（快）；
+				[code]false[/code] = 脚本文件名和 class_name 都比对（默认）。
+
+				返回匹配的节点，找不到返回 [code]null[/code]。
+
+				[b]匹配流程：[/b]
+				[codeblock]
+				1. 检查当前节点脚本文件名
+				2. 若允许，再检查 class_name
+				3. 检查深度限制，耗尽则返回 null
+				4. 递归子节点
+				[/codeblock]
+			</description>
+		</method>
+
+	</methods>
+
+	<!-- ==================== 属性 ==================== -->
+	<members>
+	</members>
+
+	<!-- ==================== 信号 ==================== -->
+	<signals>
+	</signals>
+
+	<!-- ==================== 常量 ==================== -->
+	<constants>
+	</constants>
+
+</class>

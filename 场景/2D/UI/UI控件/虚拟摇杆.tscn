@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbt2xns7id85g"]
 
-[ext_resource type="Script" uid="uid://dakx6kg22ju26" path="res://场景/2D/脚本/ui摇杆.gd" id="1_1bnae"]
+[ext_resource type="Script" uid="uid://dakx6kg22ju26" path="res://场景/2D/脚本/UI脚本/ui摇杆.gd" id="1_1bnae"]
 [ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="2_dfj1d"]
 [ext_resource type="Texture2D" uid="uid://fqnx8h6qoeuj" path="res://场景/2D/贴图/鸡.png" id="3_m0uke"]
 

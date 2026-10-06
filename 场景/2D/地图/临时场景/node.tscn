@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bmn3r15elnfqw"]
+
+[ext_resource type="Script" uid="uid://dmkih8qv1yhe2" path="res://场景/2D/脚本/临时脚本/fu.gd" id="1_lecwk"]
+[ext_resource type="PackedScene" uid="uid://db0w7181f2m37" path="res://场景/2D/装置/墙.tscn" id="2_tnei0"]
+
+[node name="Node" type="Node" unique_id=881938255 node_paths=PackedStringArray("素材容器")]
+script = ExtResource("1_lecwk")
+"素材容器" = NodePath("MaterialContainer")
+"物品" = ExtResource("2_tnei0")
+"物品体积" = 5.0
+"拾取数量" = 2
+
+[node name="MaterialContainer" type="MaterialContainer" parent="." unique_id=252981564]
+max_capacity = 10.0
+
+[node name="计时器" type="Timer" parent="." unique_id=1455043162]
+autostart = true
+
+[connection signal="backpack_full" from="MaterialContainer" to="." method="_on_material_container_backpack_full"]
+[connection signal="timeout" from="计时器" to="." method="_当拾取时"]

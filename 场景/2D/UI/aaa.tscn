@@ -2,7 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bbt2xns7id85g" path="res://场景/2D/UI/UI控件/虚拟摇杆.tscn" id="1_faaic"]
 [ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="1_hagui"]
-[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/切换到目标UI.gd" id="1_imihq"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/UI脚本/切换到目标UI.gd" id="1_imihq"]
+[ext_resource type="PackedScene" uid="uid://b5o13kvy0pei8" path="res://场景/2D/UI/UI控件/跳跃按钮.tscn" id="3_xogpa"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=263692924]
 
@@ -12,12 +13,17 @@ anchors_preset = 0
 
 [node name="虚拟摇杆" parent="控件" unique_id=115843624 instance=ExtResource("1_faaic")]
 layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 0.0
 offset_top = 319.99997
 offset_right = 166.5871
 offset_bottom = 475.1312
 
-[node name="创建房间" type="TextureButton" parent="控件" unique_id=1173460930]
+[node name="切换UI" type="TextureButton" parent="控件" unique_id=1173460930]
 custom_minimum_size = Vector2(3.545, 2.345)
 layout_mode = 0
 offset_left = 915.0
@@ -25,12 +31,12 @@ offset_top = 10.0
 offset_right = 1139.0
 offset_bottom = 216.0
 
-[node name="精灵" type="Sprite2D" parent="控件/创建房间" unique_id=983864898]
+[node name="精灵" type="Sprite2D" parent="控件/切换UI" unique_id=983864898]
 position = Vector2(112, 104)
 texture = ExtResource("1_hagui")
 metadata/_edit_lock_ = true
 
-[node name="标签" type="Label" parent="控件/创建房间/精灵" unique_id=940784968]
+[node name="标签" type="Label" parent="控件/切换UI/精灵" unique_id=940784968]
 oversampling_with_scale = 2
 offset_left = -111.99999
 offset_top = -48.0
@@ -42,8 +48,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
+[node name="跳跃按钮" parent="控件" unique_id=131461790 instance=ExtResource("3_xogpa")]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 437.0
+offset_right = 1152.0
+offset_bottom = 643.0
+"跳跃按键" = 4194309
+
 [node name="节点" type="Node" parent="." unique_id=1468170573]
 script = ExtResource("1_imihq")
-"备用方法" = "res://场景/2D/UI/bbb.tscn"
+"目标UI场景" = "res://场景/2D/UI/bbb.tscn"
 
-[connection signal="button_down" from="控件/创建房间" to="节点" method="执行切UI"]
+[connection signal="button_down" from="控件/切换UI" to="节点" method="执行切UI"]

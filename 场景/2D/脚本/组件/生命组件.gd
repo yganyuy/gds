@@ -161,14 +161,15 @@ static func _阵营可以攻击(攻击者阵营: 阵营类型, 目标阵营: 阵
 # ============ 辅助方法 ============
 
 ## 获取节点上的生命组件
-static func _获取生命组件(节点: Node) -> 生命组件:
+static func _获取生命组件(节点: Node) -> 生命组件:##注意这个生命组件的方法已经被注册为全局了!
 	if 节点 is 生命组件:
 		return 节点
 	
 	# 尝试获取子节点中的生命组件
-	for 子节点 in 节点.get_children():
-		if 子节点 is 生命组件:
-			return 子节点
+	var 子节点:Node= 实体功能.查找器.FIND(节点,"生命组件",-1,true)
+	#for 子节点 in 节点.get_children():
+		#if 子节点 is 生命组件:
+	if 子节点!=null:return 子节点
 	
 	return null
 

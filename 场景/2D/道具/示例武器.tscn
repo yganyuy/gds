@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://02oc2nbbbojq"]
+
+[ext_resource type="Script" uid="uid://be62pwp3l25ep" path="res://场景/2D/脚本/组件/武器.gd" id="1_wp"]
+[ext_resource type="Texture2D" uid="uid://bhj4rmquhkncs" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51 (2).png" id="2_tx"]
+
+[node name="示例武器" type="Node2D" unique_id=1490062356]
+
+[node name="精灵" type="Sprite2D" parent="." unique_id=987726461]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_tx")
+
+[node name="武器" type="Node" parent="." unique_id=644407243]
+script = ExtResource("1_wp")
+"武器名称" = "name"

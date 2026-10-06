@@ -9,7 +9,7 @@ func _ready() -> void:
 	摄像头=Camera2D.new()
 	self.add_child(摄像头)
 	#while true:
-func _physics_process(_delta:float):
+func  _process(_delta):
 		if 玩家当前角色.玩家角色.size()>0 and 摄像头!=null:
 			摄像头.position=玩家当前角色.玩家角色[玩家当前角色.玩家角色.size()-1].position
 			摄像头.zoom=Vector2(摄像头缩放,摄像头缩放)

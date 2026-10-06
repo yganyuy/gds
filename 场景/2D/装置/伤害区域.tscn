@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b5lvc7rpyow3i"]
+
+[ext_resource type="Script" uid="uid://3ghnmvixy3f1" path="res://场景/2D/脚本/组件/伤害组件.gd" id="1_hf535"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+
+[node name="伤害区域" type="Area2D" unique_id=1651704969]
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=840441316]
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="节点" type="Node" parent="." unique_id=739337154]
+script = ExtResource("1_hf535")

@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cg8k15bxy1e7v"]
 
 [ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="1_tffqf"]
-[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/切换到目标UI.gd" id="2_gfo1s"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/UI脚本/切换到目标UI.gd" id="2_gfo1s"]
+[ext_resource type="PackedScene" uid="uid://c2p563qmgrb3s" path="res://场景/2D/UI/UI控件/hp进度条.tscn" id="3_gfo1s"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=1065702063]
 
@@ -29,13 +30,24 @@ offset_top = -48.0
 offset_right = 21.000008
 offset_bottom = 7.0
 scale = Vector2(1.67, 1.67)
-text = "创建房间 "
+text = "返回"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="节点" type="Node" parent="控件" unique_id=58782133]
 script = ExtResource("2_gfo1s")
-"备用方法" = "res://场景/2D/UI/aaa.tscn"
+"目标UI场景" = "res://场景/2D/UI/aaa.tscn"
+
+[node name="纹理进度条" parent="控件" unique_id=1467564794 instance=ExtResource("3_gfo1s")]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 599.00006
+offset_top = 4.0000057
+offset_right = 653.00006
+offset_bottom = 38.000008
 
 [connection signal="button_down" from="控件/创建房间" to="控件/节点" method="执行切UI"]

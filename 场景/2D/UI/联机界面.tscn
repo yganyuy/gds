@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://dhhk6p5mctl0t"]
+
+[ext_resource type="Script" uid="uid://dply11fwywktn" path="res://场景/联机/创建房间.gd" id="1_7osri"]
+[ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="2_wmh1h"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/UI脚本/切换到目标UI.gd" id="3_wmh1h"]
+
+[node name="画布层" type="CanvasLayer" unique_id=1763842583]
+
+[node name="控件" type="Control" parent="." unique_id=1156291428]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="创建房间" type="TextureButton" parent="控件" unique_id=1337455077]
+custom_minimum_size = Vector2(3.545, 2.345)
+layout_mode = 0
+offset_left = 192.0
+offset_top = 240.0
+offset_right = 416.0
+offset_bottom = 446.0
+script = ExtResource("1_7osri")
+
+[node name="精灵" type="Sprite2D" parent="控件/创建房间" unique_id=1625546171]
+position = Vector2(112, 104)
+texture = ExtResource("2_wmh1h")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="控件/创建房间/精灵" unique_id=1139219808]
+oversampling_with_scale = 2
+offset_left = -111.99999
+offset_top = -48.0
+offset_right = 21.000008
+offset_bottom = 7.0
+scale = Vector2(1.67, 1.67)
+text = "创建房间 "
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="加入房间" type="TextureButton" parent="控件" unique_id=794387631]
+custom_minimum_size = Vector2(3.545, 2.345)
+layout_mode = 0
+offset_left = 552.0
+offset_top = 248.0
+offset_right = 776.0
+offset_bottom = 454.0
+script = ExtResource("1_7osri")
+
+[node name="精灵" type="Sprite2D" parent="控件/加入房间" unique_id=697095820]
+position = Vector2(112, 104)
+texture = ExtResource("2_wmh1h")
+metadata/_edit_lock_ = true
+
+[node name="标签" type="Label" parent="控件/加入房间/精灵" unique_id=1859432304]
+oversampling_with_scale = 2
+offset_left = -111.99999
+offset_top = -48.0
+offset_right = 21.000008
+offset_bottom = 7.0
+scale = Vector2(1.67, 1.67)
+text = "加入房间"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="切换到目标UI" type="Node" parent="." unique_id=488511975]
+script = ExtResource("3_wmh1h")
+"目标UI场景" = "res://场景/2D/UI/aaa.tscn"
+
+[connection signal="button_down" from="控件/创建房间" to="控件/创建房间" method="_on_button_down"]
+[connection signal="button_down" from="控件/创建房间" to="切换到目标UI" method="执行切UI"]
+[connection signal="button_down" from="控件/加入房间" to="控件/加入房间" method="_on_button_down"]
+[connection signal="button_down" from="控件/加入房间" to="切换到目标UI" method="执行切UI"]

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="MaterialContainer" inherits="Node" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		高性能物品容器，维护物品列表、容量校验与网络同步投影。
+	</brief_description>
+	<description>
+		使用 C++ 内部数据存储（vector + hashmap）实现 O(1) 增删查，并通过 [code]items_sync[/code] 属性把内部数据投影给网络同步系统。
+
+		[b]职责范围：[/b]
+		- 维护物品列表（路径 / 单件占容 / 数量）
+		- 容量上限校验（超重拒收，发 [signal backpack_full]）
+		- 为网络同步提供 [member items_sync] 投影
+
+		[b]不负责：[/b]
+		- 网络收发（由 [code]生成物体.gd[/code] / [code]同步属性.gd[/code] 处理）
+		- UI 显示
+		- 物品定义（那是 Resource 的活）
+
+		[b]典型用法：[/b]
+		[codeblock]
+		@onready var 背包: 背包组件 = $背包组件
+
+		func 拾取(路径: String, 单占: float, 数量: int) -> void:
+			背包.add_material(路径, 单占, 数量)
+		[/codeblock]
+
+		[b]同步集成：[/b]
+		在 autoload [code]属性[/code] 的 [code]属性配置[/code] 里登记：
+		[codeblock]
+		"背包组件.items_sync":        "Array",
+		"背包组件.current_capacity":  "float",
+		"背包组件.max_capacity":      "float",
+		[/codeblock]
+		建议同步方式为 [code]2[/code]（变化时同步）。
+	</description>
+	<tutorials>
+	</tutorials>
+
+	<!-- ==================== 方法 ==================== -->
+	<methods>
+
+		<method name="add_material">
+			<return type="bool" />
+			<param index="0" name="path" type="String" />
+			<param index="1" name="capacity" type="float" />
+			<param index="2" name="quantity" type="int" />
+			<description>
+				向背包增加物品。
+
+				[param path] 物品资源路径。
+				[param capacity] 单件占容。
+				[param quantity] 增加数量。
+
+				返回 [code]true[/code] 表示入库成功；若加入后总占用超过 [member max_capacity]，拒绝入库并返回 [code]false[/code]，同时发射 [signal backpack_full] 信号。
+
+				成功后：
+				- 若已有同路径物品，累加数量；
+				- 否则新增一条记录；
+				- 累加 [member current_capacity]；
+				- 发射 [signal material_added] 与 [signal capacity_updated]。
+			</description>
+		</method>
+
+		<method name="remove_material">
+			<return type="int" />
+			<param index="0" name="path" type="String" />
+			<param index="1" name="quantity" type="int" />
+			<description>
+				从背包移除物品。
+
+				返回 [b]实际移除的数量[/b]。若请求移除数超过现存数量，则移除全部，返回值为现存数量。
+
+				若物品数量归零，会从内部列表中彻底删除该条记录（采用"交换并弹出"策略保持 O(1) 删除）。
+
+				成功后发射 [signal material_removed] 与 [signal capacity_updated]。
+			</description>
+		</method>
+
+		<method name="find_material">
+			<return type="String" />
+			<param index="0" name="attribute" type="Variant" />
+			<description>
+				查找物品路径。
+
+				[param attribute] 支持两种类型：
+				- [b]int[/b]：按内部列表下标查找；
+				- [b]String[/b]：按资源路径查找。
+
+				找到返回路径字符串，找不到返回空字符串 [code]""[/code]。
+			</description>
+		</method>
+
+		<method name="get_material_quantity">
+			<return type="int" />
+			<param index="0" name="path" type="String" />
+			<description>
+				查询指定路径的物品现存数量。不存在返回 [code]0[/code]。
+			</description>
+		</method>
+
+		<method name="clear_all">
+			<return type="void" />
+			<description>
+				清空背包所有物品，并把 [member current_capacity] 归零。
+
+				会标记数据已变化，触发下一次同步。
+			</description>
+		</method>
+
+	</methods>
+
+	<!-- ==================== 属性 ==================== -->
+	<members>
+
+		<member name="max_capacity" type="float" setter="set_max_capacity" getter="get_max_capacity" default="1000.0">
+			背包容量上限。默认 [code]1000.0[/code]。
+
+			[member add_material] 加物品前会检查加入后是否超过此值。
+		</member>
+
+		<member name="current_capacity" type="float" setter="set_current_capacity" getter="get_current_capacity" default="0.0">
+			当前占用的容量。默认 [code]0.0[/code]。
+
+			由内部运算自动维护；同时被网络同步系统在客户端写回。
+			[b]不建议手动赋值[/b]，除同步系统外的代码请通过 [method add_material] / [method remove_material] 间接修改。
+		</member>
+
+		<member name="items_sync" type="Array" setter="set_items_sync" getter="get_items_sync" default="[]">
+			物品列表投影，用于网络同步。
+
+			每项是一个 [Dictionary]，结构为：
+			[codeblock]
+			{ "path": String, "capacity": float, "quantity": int }
+			[/codeblock]
+
+			[b]读取：[/b] 内部有脏标记缓存，数据未变时直接返回旧数组（同一引用），同步系统据此判定"未变化"而不发 RPC。
+
+			[b]写入：[/b] 仅供网络同步系统从服务端写回客户端使用。写入后内部会重建索引与 [member current_capacity]。本端主动修改数据请用 [method add_material] / [method remove_material]。
+		</member>
+
+	</members>
+
+	<!-- ==================== 信号 ==================== -->
+	<signals>
+
+		<signal name="material_added">
+			<param index="0" name="path" type="String" />
+			<param index="1" name="quantity" type="int" />
+			<description>
+				物品成功加入背包后发射。
+				[param path] 物品路径，[param quantity] 本次加入数量。
+			</description>
+		</signal>
+
+		<signal name="material_removed">
+			<param index="0" name="path" type="String" />
+			<param index="1" name="quantity" type="int" />
+			<description>
+				物品成功移除后发射。
+				[param quantity] 为 [b]实际移除数量[/b]（可能小于请求数量）。
+			</description>
+		</signal>
+
+		<signal name="capacity_updated">
+			<param index="0" name="current" type="float" />
+			<param index="1" name="max" type="float" />
+			<description>
+				容量变化后发射。[member current_capacity] 或 [member max_capacity] 变化时都会触发。
+
+				[param current] 当前占用，[param max] 上限。
+			</description>
+		</signal>
+
+		<signal name="backpack_full">
+			<param index="0" name="current" type="float" />
+			<param index="1" name="max" type="float" />
+			<description>
+				[method add_material] 因超出容量而被拒收时发射。
+
+				[param current] 拒收前的当前占用，[param max] 容量上限。
+				可用于 UI 提示"背包已满"。
+			</description>
+		</signal>
+
+	</signals>
+
+	<!-- ==================== 常量 ==================== -->
+	<constants>
+	</constants>
+
+</class>

@@ -6,8 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://rdfrmtvhdwvk" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51.png" id="3_rx82r"]
 [ext_resource type="Script" uid="uid://bijdeigc02m2x" path="res://场景/2D/脚本/玩家(子).gd" id="5_rx82r"]
 [ext_resource type="Script" uid="uid://dptdtvaj284rd" path="res://场景/2D/脚本/组件/物理组件.gd" id="6_n4uw4"]
-[ext_resource type="Script" uid="uid://b4cfupwftof7g" path="res://场景/2D/脚本/组件/移动组件.gd" id="7_xtemi"]
+[ext_resource type="Script" uid="uid://dsphqeewueuo5" path="res://场景/2D/脚本/组件/移动组件.gd" id="7_xtemi"]
 [ext_resource type="Script" uid="uid://ch8f2nxarkpe" path="res://场景/2D/脚本/临时脚本/p设置.gd" id="8_pkwd7"]
+[ext_resource type="Script" uid="uid://clliftlxu5cxq" path="res://场景/2D/脚本/组件/生命组件.gd" id="9_vy442"]
+[ext_resource type="Script" uid="uid://db367q4dr7pyo" path="res://场景/2D/脚本/组件/武器槽组件.gd" id="10_cqanw"]
+[ext_resource type="Script" uid="uid://b1qjm8sqtepvx" path="res://场景/2D/脚本/组件/背包组件.gd" id="11_14ahd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n4uw4"]
 atlas = ExtResource("1_6045p")
@@ -169,25 +172,41 @@ animation = &"在半空中"
 [node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=1188536701]
 shape = SubResource("CapsuleShape2D_wvhbo")
 
-[node name="物理组件" type="Node" parent="." unique_id=1701564286]
-script = ExtResource("6_n4uw4")
-"重力" = 0.0
-
 [node name="玩家_子" type="Node" parent="." unique_id=1180710104 node_paths=PackedStringArray("玩家节点")]
 script = ExtResource("5_rx82r")
 "玩家节点" = NodePath("..")
 
 [node name="移动组件" type="Node" parent="." unique_id=147721115 node_paths=PackedStringArray("引用的物理组件")]
 script = ExtResource("7_xtemi")
+"最大速度" = 600
+"加速度" = 200
+"减速度" = 100
 "引用的物理组件" = NodePath("../物理组件")
+"跳跃段数" = 2
 
 [node name="查找组件名物体" type="Node" parent="." unique_id=2060555267 node_paths=PackedStringArray("查找物体")]
 script = ExtResource("1_xtemi")
 "查找物体" = NodePath("..")
 "查找深度" = 1
+"找完自己删" = true
 
-[node name="节点" type="Node" parent="." unique_id=1791270066]
+[node name="生命组件" type="Node" parent="." unique_id=318919138]
+script = ExtResource("9_vy442")
+"阵营" = 1
+
+[node name="武器槽" type="Node2D" parent="." unique_id=777399795 node_paths=PackedStringArray("背包组件引用")]
+position = Vector2(0, -2)
+script = ExtResource("10_cqanw")
+"背包组件引用" = NodePath("../背包组件")
+
+[node name="物理组件" type="Node" parent="." unique_id=45619484]
+script = ExtResource("6_n4uw4")
+"重力" = 0.0
+
+[node name="背包组件" type="MaterialContainer" parent="." unique_id=1391121192]
+script = ExtResource("11_14ahd")
+
+[node name="玩家属性设置" type="Node" parent="." unique_id=1791270066]
 script = ExtResource("8_pkwd7")
 
-[connection signal="renamed" from="物理组件" to="." method="_renamed"]
-[connection signal="输出节点" from="查找组件名物体" to="节点" method="_on_查找组件名物体_输出节点"]
+[connection signal="输出节点" from="查找组件名物体" to="玩家属性设置" method="_on_查找组件名物体_输出节点"]

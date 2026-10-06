@@ -6,7 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://qpqy5nwf0csk" path="res://场景/2D/音频/音效/jg.mp3" id="4_tx8bi"]
 [ext_resource type="Texture2D" uid="uid://vb2p73m0yos0" path="res://场景/2D/贴图/血条.png" id="5_w5h8f"]
 [ext_resource type="Script" uid="uid://clrqm6av2iufn" path="res://场景/2D/脚本/切换地图.gd" id="6_ly611"]
-[ext_resource type="Script" uid="uid://bfha6f20l8e06" path="res://场景/2D/脚本/UI启用.gd" id="6_t8l2j"]
+[ext_resource type="Script" uid="uid://bfha6f20l8e06" path="res://场景/2D/脚本/UI脚本/UI启用.gd" id="6_t8l2j"]
 [ext_resource type="AudioStream" uid="uid://44bjq3nnojnp" path="res://场景/2D/音频/音乐/dididi.ogg" id="6_xkwow"]
 [ext_resource type="PackedScene" uid="uid://hgenc42oax3w" path="res://场景/2D/地图/场景2.tscn" id="7_e8uy1"]
 
