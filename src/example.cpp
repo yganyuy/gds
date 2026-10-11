@@ -8,5 +8,5 @@ void Example::_bind_methods() {
 }
 
 void Example::ping() {
-	UtilityFunctions::print("hi gde");
+	UtilityFunctions::print("hissssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss gde");
 }

@@ -17,6 +17,11 @@ env.Append(CPPPATH=["src/"])
 # 5. 收集 .cpp
 sources = env.Glob(f"{obj_dir}/*.cpp")
 
+# 5.1 ★ 让所有 .cpp 依赖所有 .h（路径前缀和 sources 保持一致）
+headers = Glob(f"{obj_dir}/*.h")
+for src in sources:
+    env.Depends(src, headers)
+
 # 5.5 ★ 文档：把 doc_classes/*.xml 打包进 dll
 if env["target"] in ["editor", "template_debug"]:
     try:
@@ -24,10 +29,16 @@ if env["target"] in ["editor", "template_debug"]:
         sources.append(doc_data)
     except AttributeError:
         print("Not including class reference as we're targeting a pre-4.3 baseline.")
-# 6. dll 名字
-lib_filename = "{}gdexample{}{}".format(env.subst('$SHLIBPREFIX'), env["suffix"], env.subst('$SHLIBSUFFIX'))
 
-# 7. 编译成 dll
+# 6. 库文件名：Android / Linux 强制加 "lib" 前缀
+if env["platform"] in ("android", "linux"):
+    _prefix = "lib"
+else:
+    _prefix = env.subst('$SHLIBPREFIX')
+
+lib_filename = "{}gdexample{}{}".format(_prefix, env["suffix"], env.subst('$SHLIBSUFFIX'))
+
+# 7. 编译成 dll / so
 library = env.SharedLibrary(
     "addons/bin/{}".format(lib_filename),
     source=sources,

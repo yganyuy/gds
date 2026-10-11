@@ -72,5 +72,6 @@ func 停止当前音效():
 	
 
 
-func _on_浅变颜色gd_2_当浅变结束时(物体: CanvasItem) -> void:
+func _on_浅变颜色gd_2_当浅变结束时(物体: CanvasItem) -> CanvasItem:
 	播放音效()
+	return 物体

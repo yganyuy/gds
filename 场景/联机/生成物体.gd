@@ -31,8 +31,8 @@ func _ready():
 		属性同步需要调用的节点=属性设置需要的依赖
 	类型判断()
 
-func _physics_process(_delta: float) -> void:
-	类型判断()
+#func _physics_process(_delta: float) -> void:
+	#类型判断()
 
 func 类型判断():
 	if 网络管理器!=null:
@@ -47,15 +47,15 @@ func 类型判断():
 		服务还是客户=1
 	else:服务还是客户=2
 
-func 生成物体(生成素材:PackedScene=null,节点:Node2D=null):
+func 生成物体(生成素材:PackedScene=null,节点:Node2D=null,挂载属性同步器:bool=true):
 	类型判断()
 	if 是联机么==true and 服务还是客户!=0:
 		if 服务还是客户==2:
 			var pid =网络管理器.wang_luo_id
-			客户端生成物体(生成素材,节点,pid)
+			客户端生成物体(生成素材,节点,pid,挂载属性同步器)
 		elif 服务还是客户==1:
 			var pid =网络管理器.wang_luo_id
-			服务端生成物体(生成素材,节点,当前ID,pid)
+			服务端生成物体(生成素材,节点,当前ID,pid,挂载属性同步器)
 	elif 是联机么==false or 服务还是客户==0:
 		var pid = 0
 		单机生成(生成素材,节点,当前ID,pid)
@@ -78,7 +78,7 @@ func 单机生成(生成素材,节点,ID,pid):
 	if 生成素材==null or 节点==null: return
 	self.当前ID += 1
 	ID=当前ID
-	_生成(生成素材,节点,ID,pid)
+	_生成(生成素材,节点,ID,pid,false)
 
 func 单机删除(ID):
 	if 物体表!=null:
@@ -86,12 +86,12 @@ func 单机删除(ID):
 		if 设置物体==null:return
 		设置物体.queue_free()
 
-func 服务端生成物体(生成素材,节点,ID,pid):
+func 服务端生成物体(生成素材,节点,ID,pid,挂载属性同步器):
 	类型判断()
 	self.当前ID += 1
 	ID=当前ID
-	_生成(生成素材,节点,ID,pid)
-	rpc同步生成.rpc(生成素材.resource_path, 节点.get_path(),self.当前ID,pid)
+	_生成(生成素材,节点,ID,pid,挂载属性同步器)
+	rpc同步生成.rpc(生成素材.resource_path, 节点.get_path(),self.当前ID,pid,挂载属性同步器)
 
 func 服务端删除物体(ID):
 	类型判断()
@@ -99,10 +99,10 @@ func 服务端删除物体(ID):
 	if _删除(ID)!=false:
 		rpc("rpc同步删除", ID)
 
-func 客户端生成物体(生成素材,节点,pid):
+func 客户端生成物体(生成素材,节点,pid,挂载属性同步器):
 	类型判断()
 	if 生成素材==null or 节点==null: return
-	rpc请求生成.rpc_id(1, 生成素材.resource_path, 节点.get_path(),pid)
+	rpc请求生成.rpc_id(1, 生成素材.resource_path, 节点.get_path(),pid,挂载属性同步器)
 
 func _同步(id:int,数据:Dictionary)-> bool:
 	if 物体表!=null:
@@ -120,7 +120,7 @@ func _删除(id) -> bool:
 		return true
 	else:return false
 
-func _生成(生成素材,节点,ID,pid):
+func _生成(生成素材,节点,ID,pid,挂载属性同步器:bool=true):
 	if 生成素材==null or 节点==null: return
 	var 生成物=生成素材.instantiate()
 	var 网络状态同步器:同步属性=null
@@ -133,9 +133,10 @@ func _生成(生成素材,节点,ID,pid):
 		if 生成物.has_node("同步属性"):
 			网络状态同步器=生成物.get_node_or_null("同步属性")
 		else:
-			网络状态同步器=同步属性.new()
-			生成物.add_child(网络状态同步器)
-			网络状态同步器.name= "网络状态同步器%d" % ID
+			if 挂载属性同步器==true:
+				网络状态同步器=同步属性.new()
+				生成物.add_child(网络状态同步器)
+				网络状态同步器.name= "网络状态同步器%d" % ID
 	生成物.name = str(生成物.name) + str(ID)
 	节点.add_child(生成物)
 	if 物体表!=null and 生成物!=null:
@@ -144,7 +145,7 @@ func _生成(生成素材,节点,ID,pid):
 
 # 客户端强制同步服务端ID，避免本地ID错乱
 @rpc("any_peer","call_local","reliable")
-func rpc同步生成(素材路径: String, 父节点路径: NodePath,ID:int,pid):
+func rpc同步生成(素材路径: String, 父节点路径: NodePath,ID:int,pid:int,挂载属性同步器:bool):
 	if 服务还是客户 == 1: return
 	var 素材 = load(素材路径) as PackedScene
 	if 素材 == null: return
@@ -154,16 +155,16 @@ func rpc同步生成(素材路径: String, 父节点路径: NodePath,ID:int,pid)
 	# 关键修复：强制更新本地当前ID，防止后续生成冲突
 	self.当前ID = max(self.当前ID, ID)
 	
-	_生成(素材,父节点,ID,pid)
+	_生成(素材,父节点,ID,pid,挂载属性同步器)
 
 @rpc("any_peer", "reliable")
-func rpc请求生成(素材路径: String, 父节点路径: NodePath,pid):
+func rpc请求生成(素材路径: String, 父节点路径: NodePath,pid,挂载属性同步器:bool):
 	类型判断()
 	if 服务还是客户 == 2: return
 	var 素材 = load(素材路径) as PackedScene
 	var 父节点 = get_node(父节点路径) as Node2D
 	if 素材 == null or 父节点 == null: return
-	服务端生成物体(素材, 父节点,当前ID,pid)
+	服务端生成物体(素材, 父节点,当前ID,pid,挂载属性同步器)
 
 @rpc("any_peer", "call_local", "reliable")
 func rpc同步删除(ID:int):

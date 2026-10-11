@@ -5,6 +5,7 @@ class_name 跳跃按钮
 @export var 键盘跳跃动作: StringName = &""##这两种满足其一的条件就可以 但第一个这个属性的 优先级最高 
 @export var 跳跃按键: Key = KEY_SPACE
 
+
 var 键盘上一帧按下: bool = false
 
 func _ready() -> void:

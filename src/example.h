@@ -3,7 +3,7 @@
 
 namespace godot {
 	class Example : public RefCounted {
-		GDCLASS(Example, RefCounted)
+		GDCLASS(Example, RefCounted)//ssssssssssssssss
 
 	protected:
 		static void _bind_methods();
