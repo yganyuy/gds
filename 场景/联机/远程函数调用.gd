@@ -7,7 +7,7 @@ extends Node
 ##   服务器调用.申请调用(物体ID, "", "受击", [10])   # 空组件名 = 调物体自身
 
 @export var 查找深度: int = -1
-@export var 是否仅查找脚本名: bool = false
+@export var 是否仅查找脚本名: bool = true
 @export var 校验权限: bool = false   ## 开启后只有物体 pid 匹配请求者才允许调用
 @export var debug: bool = false
 
@@ -19,7 +19,8 @@ var _节点缓存: Dictionary = {}
 #  对外接口
 # ============================================================
 func 申请调用(物体ID: int, 组件名: String, 函数名: String, 参数: Array = []) -> void:
-	var ef = _获取实体功能()
+	var ef = 实体功能
+	#_获取实体功能()
 	if ef == null: return
 	ef.类型判断()
 
@@ -36,7 +37,8 @@ func 申请调用(物体ID: int, 组件名: String, 函数名: String, 参数: A
 # ============================================================
 @rpc("any_peer", "reliable")
 func rpc_接收调用请求(物体ID: int, 组件名: String, 函数名: String, 参数: Array) -> void:
-	var ef = _获取实体功能()
+	var ef =实体功能 
+	#_获取实体功能()
 	if ef == null or ef.服务还是客户 != 1: return
 	var 请求者 = multiplayer.get_remote_sender_id()
 	_本地执行(物体ID, 组件名, 函数名, 参数, 请求者)
@@ -45,7 +47,8 @@ func rpc_接收调用请求(物体ID: int, 组件名: String, 函数名: String,
 #  执行核心
 # ============================================================
 func _本地执行(物体ID: int, 组件名: String, 函数名: String, 参数: Array, 请求者: int) -> void:
-	var ef = _获取实体功能()
+	var ef = 实体功能
+	#_获取实体功能()
 	if ef == null or ef.物体表 == null:
 		if debug: push_warning("[服务器调用] 物体表未初始化")
 		return
@@ -64,15 +67,15 @@ func _本地执行(物体ID: int, 组件名: String, 函数名: String, 参数: 
 
 	var 目标 = _查找目标节点(物体, 组件名)
 	if 目标 == null:
-		if debug: push_warning("[服务器调用] 物体 %d 上找不到组件: %s" % [物体ID, 组件名])
+		if debug: push_warning(物体.name,"[服务器调用] 物体 %d 上找不到组件: %s" % [物体ID, 组件名])
 		return
 
 	if not 目标.has_method(函数名):
-		if debug: push_warning("[服务器调用] %s 上找不到方法: %s" % [组件名, 函数名])
+		if debug: push_warning(物体.name,"[服务器调用] %s 上找不到方法: %s" % [组件名, 函数名])
 		return
 
 	if debug:
-		print("[服务器调用] ", 目标, ".", 函数名, "(", 参数, ") 请求者=", 请求者)
+		print(物体.name,"[服务器调用] ", 目标, ".", 函数名, "(", 参数, ") 请求者=", 请求者)
 
 	目标.callv(函数名, 参数)
 	收到调用.emit(物体, 组件名, 函数名, 参数, 请求者)
@@ -91,10 +94,14 @@ func _查找目标节点(物体: Node, 组件名: String) -> Node:
 			return 缓存
 		_节点缓存.erase(缓存Key)
 
-	var ef = _获取实体功能()
+	var ef = 实体功能
+	#_获取实体功能()
 	var 找到: Node = null
 	if ef != null and ef.查找器 != null:
-		找到 = ef.查找器.FIND(物体, 组件名, 查找深度, 是否仅查找脚本名)
+		#print(物体,"/", 组件名,"/", 查找深度,"/", 是否仅查找脚本名)
+		找到 = 实体功能.查找器.FIND(物体, 组件名, 查找深度, 是否仅查找脚本名)
+		#print(找到,"/",物体,"/", 组件名,"/", 查找深度,"/", 是否仅查找脚本名)
+		
 	if 找到 == null:
 		找到 = 物体.get_node_or_null(组件名)
 
@@ -104,12 +111,12 @@ func _查找目标节点(物体: Node, 组件名: String) -> Node:
 
 # ============================================================
 #  延迟获取实体功能（避免 Autoload 加载顺序坑）
-# ============================================================
-func _获取实体功能() -> 生成物体:
-	# 你的项目里"实体功能"是个全局名（Autoload 或全局变量），直接引用
-	if 实体功能 is 生成物体:
-		return 实体功能
-	return null
+## ============================================================
+#func _获取实体功能() -> 生成物体:
+	## 你的项目里"实体功能"是个全局名（Autoload 或全局变量），直接引用
+	#if 实体功能 is 生成物体:
+		#return 实体功能
+	#return null
 
 func 清理物体缓存(物体: Node) -> void:
 	if 物体 == null: return

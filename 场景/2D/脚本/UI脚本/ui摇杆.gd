@@ -14,7 +14,6 @@ func _process(_delta) -> void:
 		else:
 			玩家移动组件.结束移动()
 	_on_flicked(输入方向)
-		
 
 func _on_flicked(输出向量: Vector2) -> void:
 	if 遥感图片!=null:

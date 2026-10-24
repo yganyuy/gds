@@ -11,6 +11,13 @@
 [ext_resource type="Script" uid="uid://clliftlxu5cxq" path="res://场景/2D/脚本/组件/生命组件.gd" id="9_vy442"]
 [ext_resource type="Script" uid="uid://db367q4dr7pyo" path="res://场景/2D/脚本/组件/武器槽组件.gd" id="10_cqanw"]
 [ext_resource type="Script" uid="uid://b1qjm8sqtepvx" path="res://场景/2D/脚本/组件/背包组件.gd" id="11_14ahd"]
+[ext_resource type="Texture2D" uid="uid://d3w5ca6twp6en" path="res://场景/2D/贴图/crossbow_pulling_2 (1).png" id="12_lb4xv"]
+[ext_resource type="Script" uid="uid://dxwnjosbero37" path="res://场景/2D/脚本/关联脚本/移动与动画关联.gd" id="12_wl6fx"]
+[ext_resource type="Texture2D" uid="uid://b6vh1mcm7dh5u" path="res://场景/2D/贴图/untitled.png" id="13_5jn66"]
+[ext_resource type="Script" uid="uid://c13rgmvt87jkm" path="res://场景/2D/脚本/临时脚本/玩家动画播放器.gd" id="14_i0m33"]
+[ext_resource type="Script" uid="uid://dr38aircrwdf7" path="res://场景/2D/脚本/组件/工具組件/初始插帧.gd" id="15_wl6fx"]
+[ext_resource type="Script" uid="uid://cba7vp6x8a505" path="res://场景/2D/脚本/UI脚本/切换到目标UI.gd" id="17_ibswv"]
+[ext_resource type="Script" uid="uid://bkaels2if7wt4" path="res://场景/2D/脚本/临时脚本/设置摄像头.gd" id="18_06g23"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n4uw4"]
 atlas = ExtResource("1_6045p")
@@ -158,19 +165,841 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wvhbo"]
-radius = 2.0
-height = 10.0
+radius = 29.0
+height = 134.0
+
+[sub_resource type="Animation" id="Animation_ibswv"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_06g23"]
+resource_name = "移动"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("骨架2D/腹部:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6207694]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("骨架2D/腹部:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 17.000002), Vector2(0.99999994, 9.000002)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("骨架2D/腹部/右大腿关节:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.5103946, 0.6196284, -0.5103946]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("骨架2D/腹部/右大腿关节:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4.59414, -8.239776)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.20955464),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.47279775, 0.5605224]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.82518, -3.9952984)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.6420096, -1.1710922]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(37.203568, 3.1455262)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("骨架2D/腹部/左大腿关节:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.2853868, -0.7138407, 0.2853868]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("骨架2D/腹部/左大腿关节:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.2972171, 5.8926063)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.51378703, 0.111191265]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(21.023739, -0.050246716)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节/左脚关节:rotation")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.4677188, -1.8480211]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节/左脚关节:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(38.152363, 2.0968208)]
+}
+
+[sub_resource type="Animation" id="Animation_d1eex"]
+resource_name = "站立"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("骨架2D/腹部/胸腔:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0118860295, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("骨架2D/腹部/胸腔:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-16.928825, 1.8479402)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("骨架2D/腹部:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6207694]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("骨架2D/腹部:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 17.000002)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("骨架2D/腹部/右大腿关节:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("骨架2D/腹部/右大腿关节:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4.59414, -8.239776)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19.82518, -3.9952984)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.6420096]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(37.203568, 3.1455262)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("骨架2D/腹部/左大腿关节:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("骨架2D/腹部/左大腿关节:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.2972171, 5.8926063)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:rotation")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(21.023739, -0.050246716)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节/左脚关节:rotation")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.4677188]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节/左脚关节:position")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(38.152363, 2.0968208)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("骨架2D/腹部/胸腔/上胸腔:rotation")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("骨架2D/腹部/胸腔/上胸腔:position")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-19.026237, -0.049659014)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节:rotation")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节:position")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3.4954753, -10.187327)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊:rotation")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.08726178]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊:position")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(22.621626, -8.140163)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊:rotation")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊:position")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(24.768984, -5.2438164)]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手:rotation")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手:position")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(7.9400635, -1.3983703)]
+}
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节:rotation")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节:position")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4.6943336, 13.782718)]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊:rotation")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊:position")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(24.219803, 3.7949028)]
+}
+tracks/30/type = "value"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊:rotation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/31/type = "value"
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊:position")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(24.918842, -2.2475662)]
+}
+tracks/32/type = "value"
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手:rotation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/33/type = "value"
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/path = NodePath("骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手:position")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(11.935072, -1.5981789)]
+}
+tracks/34/type = "value"
+tracks/34/imported = false
+tracks/34/enabled = true
+tracks/34/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子:rotation")
+tracks/34/interp = 1
+tracks/34/loop_wrap = true
+tracks/34/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/35/type = "value"
+tracks/35/imported = false
+tracks/35/enabled = true
+tracks/35/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子:position")
+tracks/35/interp = 1
+tracks/35/loop_wrap = true
+tracks/35/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-9.987517, 0.49952286)]
+}
+tracks/36/type = "value"
+tracks/36/imported = false
+tracks/36/enabled = true
+tracks/36/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子/头:rotation")
+tracks/36/interp = 1
+tracks/36/loop_wrap = true
+tracks/36/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/37/type = "value"
+tracks/37/imported = false
+tracks/37/enabled = true
+tracks/37/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子/头:position")
+tracks/37/interp = 1
+tracks/37/loop_wrap = true
+tracks/37/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-9.088669, -1.5479332)]
+}
+tracks/38/type = "value"
+tracks/38/imported = false
+tracks/38/enabled = true
+tracks/38/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子/头/面部:rotation")
+tracks/38/interp = 1
+tracks/38/loop_wrap = true
+tracks/38/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/39/type = "value"
+tracks/39/imported = false
+tracks/39/enabled = true
+tracks/39/path = NodePath("骨架2D/腹部/胸腔/上胸腔/脖子/头/面部:position")
+tracks/39/interp = 1
+tracks/39/loop_wrap = true
+tracks/39/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1.9975033, 0.099905014)]
+}
+
+[sub_resource type="Animation" id="Animation_lek26"]
+resource_name = "跳跃_起跳"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("骨架2D/腹部:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.6207694, 1.6207694, 1.6207694, 1.6207694]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("骨架2D/腹部:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 17.000002), Vector2(0, 20.000002), Vector2(-5.9604645e-08, 25.000002), Vector2(5.9604645e-08, 10.000002)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("骨架2D/腹部/右大腿关节:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.4316738, -0.4316738, 0.16100776, 0.3001135]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("骨架2D/腹部/右大腿关节:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(4.59414, -8.239776), Vector2(4.59414, -8.239776), Vector2(4.59414, -8.239776), Vector2(4.59414, -8.239776), Vector2(4.59414, -8.239776)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.22001354, 0.6148836, -0.18153156, -0.18153156]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(19.82518, -3.9952984), Vector2(19.82518, -3.9952984), Vector2(19.82518, -3.9952984), Vector2(19.82518, -3.9952984), Vector2(19.82518, -3.9952984)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6606948),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.6420096, -1.6420096]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("骨架2D/腹部/右大腿关节/右小腿关节/右脚关节:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.6606948),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(37.203568, 3.1455262), Vector2(37.203568, 3.1455262)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("骨架2D/腹部/左大腿关节:rotation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.22630374, -0.22630374, -0.04310772, -0.13229924]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("骨架2D/腹部/左大腿关节:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(2.2972171, 5.8926063), Vector2(2.2972171, 5.8926063), Vector2(2.2972171, 5.8926063), Vector2(2.2972171, 5.8926063), Vector2(2.2972171, 5.8926063)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:rotation")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.64322954, 0.85759133, 0.31480616, 0.26744276]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("骨架2D/腹部/左大腿关节/左小腿关节:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.40723857, 0.6606948, 0.80308586),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(21.023739, -0.050246716), Vector2(21.023739, -0.050246716), Vector2(21.023739, -0.050246716), Vector2(21.023739, -0.050246716), Vector2(21.023739, -0.050246716)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1dr63"]
+_data = {
+&"RESET": SubResource("Animation_ibswv"),
+&"移动": SubResource("Animation_06g23"),
+&"站立": SubResource("Animation_d1eex"),
+&"跳跃_起跳": SubResource("Animation_lek26")
+}
 
 [node name="p" type="CharacterBody2D" unique_id=1518132891]
 velocity = Vector2(0, 343.00003)
+metadata/_edit_lock_ = true
 
 [node name="动画精灵" type="AnimatedSprite2D" parent="." unique_id=2137889619]
-scale = Vector2(0.245, 0.245)
+visible = false
+position = Vector2(-1, 12)
+scale = Vector2(3.305, 3.305)
 sprite_frames = SubResource("SpriteFrames_wvhbo")
-animation = &"在半空中"
+animation = &"行走"
+frame_progress = 0.6790804
 
 [node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=1188536701]
+position = Vector2(0, 16)
 shape = SubResource("CapsuleShape2D_wvhbo")
+metadata/_edit_lock_ = true
 
 [node name="玩家_子" type="Node" parent="." unique_id=1180710104 node_paths=PackedStringArray("玩家节点")]
 script = ExtResource("5_rx82r")
@@ -178,11 +1007,11 @@ script = ExtResource("5_rx82r")
 
 [node name="移动组件" type="Node" parent="." unique_id=147721115 node_paths=PackedStringArray("引用的物理组件")]
 script = ExtResource("7_xtemi")
-"最大速度" = 600
-"加速度" = 200
-"减速度" = 100
+"最大速度" = 400
+"加速度" = 800
+"减速度" = 1000
 "引用的物理组件" = NodePath("../物理组件")
-"跳跃段数" = 2
+"跳跃最大高度" = 150.0
 
 [node name="查找组件名物体" type="Node" parent="." unique_id=2060555267 node_paths=PackedStringArray("查找物体")]
 script = ExtResource("1_xtemi")
@@ -194,14 +1023,8 @@ script = ExtResource("1_xtemi")
 script = ExtResource("9_vy442")
 "阵营" = 1
 
-[node name="武器槽" type="Node2D" parent="." unique_id=777399795 node_paths=PackedStringArray("背包组件引用")]
-position = Vector2(0, -2)
-script = ExtResource("10_cqanw")
-"背包组件引用" = NodePath("../背包组件")
-
 [node name="物理组件" type="Node" parent="." unique_id=45619484]
 script = ExtResource("6_n4uw4")
-"重力" = 0.0
 
 [node name="背包组件" type="MaterialContainer" parent="." unique_id=1391121192]
 script = ExtResource("11_14ahd")
@@ -209,4 +1032,329 @@ script = ExtResource("11_14ahd")
 [node name="玩家属性设置" type="Node" parent="." unique_id=1791270066]
 script = ExtResource("8_pkwd7")
 
+[node name="移动与动画关联" type="Node" parent="." unique_id=1524968670 node_paths=PackedStringArray("关联的移动组件_2d", "关联的动画播放器", "需要翻转的节点")]
+script = ExtResource("12_wl6fx")
+"关联的移动组件_2d" = NodePath("../移动组件")
+"关联的动画播放器" = NodePath("../骨骼动画序列/mi/动画播放器")
+"需要翻转的节点" = NodePath("../骨骼动画序列/mi")
+
+[node name="骨骼动画序列" type="Node2D" parent="." unique_id=1108321748]
+
+[node name="精灵" type="Sprite2D" parent="骨骼动画序列" unique_id=507516683]
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("12_lb4xv")
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="mi" type="Node2D" parent="骨骼动画序列" unique_id=616194320]
+metadata/_edit_lock_ = true
+
+[node name="贴图" type="Node2D" parent="骨骼动画序列/mi" unique_id=1482370158]
+position = Vector2(-1, 0)
+metadata/_edit_lock_ = true
+
+[node name="右大腿" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=2136638416]
+position = Vector2(9.999996, 19.999998)
+scale = Vector2(0.2907076, 0.3286169)
+offset = Vector2(-335.39752, -214.02477)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(311.82266, 196.9032, 326.6794, 186.77356, 345.5881, 186.77356, 366.52267, 192.85133, 369.89926, 267.13538, 361.78918, 292.11804, 329.37433, 300.89706, 291.55698, 290.0921)
+uv = PackedVector2Array(311.82266, 196.9032, 326.6794, 186.77356, 345.5881, 186.77356, 366.52267, 192.85133, 369.89926, 267.13538, 361.78918, 292.11804, 329.37433, 300.89706, 291.55698, 290.0921)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="右小腿" type="Polygon2D" parent="骨骼动画序列/mi/贴图/右大腿" unique_id=1414994325]
+position = Vector2(-254.55132, -112.59311)
+scale = Vector2(1.253613, 1.3174304)
+offset = Vector2(-142.7641, -177.50809)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(318.07175, 300.77655, 364.83823, 296.4262, 363.75064, 391.04675, 349.61197, 416.0614, 306.10825, 410.62344)
+uv = PackedVector2Array(318.07175, 300.77655, 364.83823, 296.4262, 363.75064, 391.04675, 349.61197, 416.0614, 306.10825, 410.62344)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="右脚" type="Polygon2D" parent="骨骼动画序列/mi/贴图/右大腿/右小腿" unique_id=941653149]
+position = Vector2(96.039116, -60.055923)
+scale = Vector2(0.97747093, 1.0470417)
+offset = Vector2(-142.7641, -177.50809)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../../骨架2D")
+polygon = PackedVector2Array(229.93903, 420.96695, 289.26227, 420.96695, 284.31866, 480.29016, 202.25485, 471.3917)
+uv = PackedVector2Array(229.93903, 420.96695, 289.26227, 420.96695, 284.31866, 480.29016, 202.25485, 471.3917)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(1, 1, 1, 1), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="左大腿" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=1941846875]
+position = Vector2(-4, 19)
+scale = Vector2(0.28746942, 0.35036707)
+offset = Vector2(-264.51617, -206.04959)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(241.98114, 177.55548, 282.65717, 187.1263, 293.42432, 240.96216, 280.2644, 282.83447, 240.78479, 288.81622, 203.69788, 272.06732, 203.69788, 270.87097, 215.66144, 201.48251)
+uv = PackedVector2Array(241.98114, 177.55548, 282.65717, 187.1263, 293.42432, 240.96216, 280.2644, 282.83447, 240.78479, 288.81622, 203.69788, 272.06732, 203.69788, 270.87097, 215.66144, 201.48251)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="左小腿" type="Polygon2D" parent="骨骼动画序列/mi/贴图/左大腿" unique_id=296475922]
+position = Vector2(-160.01703, -82.77034)
+scale = Vector2(1.2969534, 1.1430662)
+offset = Vector2(-142.7641, -177.50809)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(237.36465, 288.47192, 279.55408, 292.3666, 284.1042, 391.83817, 261.63327, 413.41025, 225.67978, 408.91608)
+uv = PackedVector2Array(237.36465, 288.47192, 278.71118, 291.16843, 284.1042, 391.83817, 261.63327, 413.41025, 225.67978, 408.91608)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="左脚" type="Polygon2D" parent="骨骼动画序列/mi/贴图/左大腿/左小腿" unique_id=592256337]
+position = Vector2(8.046463, -58.256424)
+scale = Vector2(0.97747093, 1.0470417)
+offset = Vector2(-142.7641, -177.50809)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../../骨架2D")
+polygon = PackedVector2Array(229.93903, 420.96695, 289.26227, 420.96695, 284.31866, 480.29016, 202.25485, 471.3917)
+uv = PackedVector2Array(229.93903, 420.96695, 289.26227, 420.96695, 284.31866, 480.29016, 202.25485, 471.3917)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(1, 1, 1, 1), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="左胳膊" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=312065104]
+position = Vector2(12, -12)
+rotation = -2.0339823
+scale = Vector2(0.40507707, 0.3695323)
+offset = Vector2(-304.16742, -145.83072)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(240.61557, 109.31469, 335.49377, 117.12819, 332.1451, 164.56729, 235.5926, 165.6835, 223.87236, 131.08086)
+uv = PackedVector2Array(240.61557, 109.31469, 335.49377, 117.12819, 332.1451, 164.56729, 235.5926, 165.6835, 223.87236, 131.08086)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+
+[node name="左小胳膊" type="Polygon2D" parent="骨骼动画序列/mi/贴图/左胳膊" unique_id=1000894006]
+position = Vector2(-65.14335, -14.489618)
+rotation = -2.7578173
+scale = Vector2(1.0203443, 0.94749737)
+offset = Vector2(-426.08917, -134.14021)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(414.02155, 119.60682, 413.34622, 152.69698, 490.3315, 152.69698, 491.0068, 118.93151)
+uv = PackedVector2Array(414.02155, 119.60682, 413.34622, 152.69698, 490.3315, 152.69698, 491.0068, 118.93151)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(1, 1, 1, 1), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0)]
+
+[node name="左手" type="Polygon2D" parent="骨骼动画序列/mi/贴图/左胳膊/左小胳膊" unique_id=893736109]
+position = Vector2(61.455936, -0.73165035)
+rotation = -1.4981002
+scale = Vector2(0.50659454, 0.5173177)
+offset = Vector2(-56.74649, -224.03288)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../../骨架2D")
+polygon = PackedVector2Array(30.168549, 192.79288, 76.826294, 192.79288, 84.19333, 249.27332, 65.161865, 271.98828, 14.820618, 266.463)
+uv = PackedVector2Array(30.168549, 192.79288, 76.826294, 192.79288, 84.19333, 249.27332, 65.161865, 271.98828, 14.820618, 266.463)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+
+[node name="脖子" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=1649173999]
+position = Vector2(0, -20.999998)
+rotation = -3.1154711
+scale = Vector2(0.5613993, 0.5823105)
+offset = Vector2(-44.518288, -125.69009)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(32.152534, 120.18504, 66.1019, 119.70005, 62.545303, 142.00964, 24.392677, 141.84798)
+uv = PackedVector2Array(32.152534, 120.18504, 66.1019, 119.70005, 62.545303, 142.00964, 24.392677, 141.84798)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(1, 1, 1, 1), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(1, 1, 1, 1), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="头部" type="Polygon2D" parent="骨骼动画序列/mi/贴图/脖子" unique_id=1126385407]
+position = Vector2(2.1528487, 13.688839)
+rotation = -3.1098502
+scale = Vector2(0.55822456, 0.7025653)
+offset = Vector2(-44.54438, -76.87921)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(23.52356, 94.352875, 88.893555, 95.09572, 103.00754, 43.09686, 54.270073, 9.409843, 10.895264, 21.554474, -0.24734497, 72.06765)
+uv = PackedVector2Array(23.52356, 94.352875, 88.893555, 95.09572, 103.00754, 43.09686, 51.008667, 1.4977713, 10.895264, 21.554474, -0.24734497, 72.06765)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(1, 1, 1, 1, 1, 1), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="面部表情" type="Polygon2D" parent="骨骼动画序列/mi/贴图/脖子/头部" unique_id=854666364]
+position = Vector2(11.657381, -15.217932)
+rotation = -0.0013182163
+scale = Vector2(0.55822456, 0.7025653)
+offset = Vector2(-130.31015, -57.712357)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../../骨架2D")
+polygon = PackedVector2Array(114.892975, 30.468563, 167.63467, 32.697086, 160.94913, 97.32424, 95.57913, 80.98174)
+uv = PackedVector2Array(114.892975, 30.468563, 167.63467, 32.697086, 160.94913, 97.32424, 95.57913, 80.98174)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(1, 1, 1, 1)]
+
+[node name="身子" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=219236085]
+position = Vector2(1, -17)
+scale = Vector2(0.36443484, 0.37743258)
+offset = Vector2(-145.50806, -132.46689)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(154.39798, 206.72168, 100.841705, 198.5307, 96.11615, 149.38495, 105.25223, 111.26549, 119.74393, 108.43015, 127.61984, 119.14141, 136.12584, 122.29178, 154.39798, 122.29178, 163.21902, 114.415855, 179.91597, 119.45644, 194.72272, 157.26088, 189.99716, 191.91495)
+uv = PackedVector2Array(154.39798, 206.72168, 100.841705, 198.5307, 96.11615, 149.38495, 105.25223, 111.26549, 119.74393, 108.43015, 127.61984, 119.14141, 136.12584, 122.29178, 154.39798, 122.29178, 163.21902, 114.415855, 179.91597, 119.45644, 194.72272, 157.26088, 189.99716, 191.91495)
+bones = ["腹部", PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="腹部" type="Polygon2D" parent="骨骼动画序列/mi/贴图/身子" unique_id=739479424]
+position = Vector2(2.743975, 42.391678)
+offset = Vector2(-145.50806, -132.46689)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(98.86049, 140.41533, 186.66768, 148.36377, 189.41165, 201.35336, 126.30023, 204.00284, 93.37253, 188.10596)
+uv = PackedVector2Array(96.57774, 134.60335, 190.3516, 152.13829, 196.45071, 241.71902, 123.26136, 250.1053, 88.572655, 227.61482)
+bones = ["腹部", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+metadata/_edit_lock_ = true
+
+[node name="右胳膊" type="Polygon2D" parent="骨骼动画序列/mi/贴图" unique_id=1769501883]
+position = Vector2(-13, -17)
+rotation = -1.5442348
+scale = Vector2(0.4050771, 0.3695323)
+offset = Vector2(-315.81015, -138.53004)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../骨架2D")
+polygon = PackedVector2Array(240.61557, 109.31469, 335.49377, 117.12819, 332.1451, 164.56729, 235.5926, 165.6835, 223.87236, 131.08086)
+uv = PackedVector2Array(240.61557, 109.31469, 335.49377, 117.12819, 332.1451, 164.56729, 235.5926, 165.6835, 223.87236, 131.08086)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+
+[node name="右小胳膊" type="Polygon2D" parent="骨骼动画序列/mi/贴图/右胳膊" unique_id=1732001452]
+position = Vector2(-65.41937, -9.197569)
+rotation = -3.2079098
+scale = Vector2(1.0203443, 0.94749737)
+offset = Vector2(-418.86493, -138.80148)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../骨架2D")
+polygon = PackedVector2Array(414.02155, 119.60682, 413.34622, 152.69698, 490.3315, 152.69698, 491.0068, 118.93151)
+uv = PackedVector2Array(414.02155, 119.60682, 413.34622, 152.69698, 490.3315, 152.69698, 491.0068, 118.93151)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(1, 1, 1, 1), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0)]
+
+[node name="右手" type="Polygon2D" parent="骨骼动画序列/mi/贴图/右胳膊/右小胳膊" unique_id=1184704122]
+position = Vector2(61.113705, 0.5836563)
+rotation = -1.4981002
+scale = Vector2(0.50659454, 0.5173177)
+offset = Vector2(-47.984184, -201.77505)
+texture = ExtResource("13_5jn66")
+skeleton = NodePath("../../../../骨架2D")
+polygon = PackedVector2Array(30.168549, 192.79288, 76.826294, 192.79288, 84.19333, 249.27332, 65.161865, 271.98828, 14.820618, 266.463)
+uv = PackedVector2Array(30.168549, 192.79288, 76.826294, 192.79288, 84.19333, 249.27332, 65.161865, 271.98828, 14.820618, 266.463)
+bones = ["腹部", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/右大腿关节/右小腿关节/右脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/左大腿关节/左小腿关节/左脚关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊/左手", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊/右手", PackedFloat32Array(1, 1, 1, 1, 1), "腹部/胸腔/上胸腔/脖子", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头", PackedFloat32Array(0, 0, 0, 0, 0), "腹部/胸腔/上胸腔/脖子/头/面部", PackedFloat32Array(0, 0, 0, 0, 0)]
+
+[node name="骨架2D" type="Skeleton2D" parent="骨骼动画序列/mi" unique_id=1507434091]
+modulate = Color(1, 1, 1, 0.43529412)
+metadata/_edit_lock_ = true
+
+[node name="腹部" type="Bone2D" parent="骨骼动画序列/mi/骨架2D" unique_id=491765200]
+position = Vector2(0, 17.000002)
+rotation = 1.6207694
+scale = Vector2(0.99999857, 0.99999857)
+rest = Transform2D(-0.049952235, 0.99875116, -0.99875116, -0.049952235, 0, 17.000002)
+
+[node name="右大腿关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部" unique_id=2005302166]
+position = Vector2(4.59414, -8.239776)
+rest = Transform2D(1, 0, 0, 1, 4.59414, -8.239776)
+
+[node name="右小腿关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/右大腿关节" unique_id=487621127]
+position = Vector2(19.82518, -3.9952984)
+rest = Transform2D(1, 0, 0, 1, 19.82518, -3.9952984)
+
+[node name="右脚关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/右大腿关节/右小腿关节" unique_id=69671073]
+position = Vector2(37.203568, 3.1455262)
+rotation = -1.6420096
+rest = Transform2D(-0.07115311, -0.99746543, 0.99746543, -0.07115311, 37.203568, 3.1455262)
+
+[node name="左大腿关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部" unique_id=420294650]
+position = Vector2(2.2972171, 5.8926063)
+rest = Transform2D(1, 0, 0, 1, 2.2972171, 5.8926063)
+
+[node name="左小腿关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/左大腿关节" unique_id=2022801277]
+position = Vector2(21.023739, -0.050246716)
+rest = Transform2D(1, 0, 0, 1, 21.023739, -0.050246716)
+
+[node name="左脚关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/左大腿关节/左小腿关节" unique_id=1354080470]
+position = Vector2(38.152363, 2.0968208)
+rotation = -1.4677188
+rest = Transform2D(0.10289505, -0.9946922, 0.9946922, 0.10289505, 38.152363, 2.0968208)
+
+[node name="胸腔" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部" unique_id=2120856866]
+position = Vector2(-16.928825, 1.8479402)
+rest = Transform2D(1, 0, 0, 1, -16.928825, 1.8479402)
+
+[node name="上胸腔" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔" unique_id=2127931167]
+position = Vector2(-19.026237, -0.049659014)
+rest = Transform2D(1, 0, 0, 1, -19.026237, -0.049659014)
+
+[node name="左大胳膊关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔" unique_id=554983184]
+position = Vector2(3.4954753, -10.187327)
+rest = Transform2D(1, 0, 0, 1, 3.4954753, -10.187327)
+
+[node name="左胳膊" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/左大胳膊关节" unique_id=986553371]
+position = Vector2(22.621626, -8.140163)
+rotation = 0.08726178
+scale = Vector2(1.0000001, 1.0000001)
+rest = Transform2D(0.9961952, 0.08715109, -0.08715109, 0.9961952, 22.621626, -8.140163)
+
+[node name="左小胳膊" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊" unique_id=1220932682]
+position = Vector2(24.768984, -5.2438164)
+rest = Transform2D(1, 0, 0, 1, 24.768984, -5.2438164)
+
+[node name="左手" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/左大胳膊关节/左胳膊/左小胳膊" unique_id=1389981536]
+position = Vector2(7.9400635, -1.3983703)
+rest = Transform2D(1, 0, 0, 1, 7.9400635, -1.3983703)
+
+[node name="右大胳膊关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔" unique_id=256007545]
+position = Vector2(4.6943336, 13.782718)
+rest = Transform2D(1, 0, 0, 1, 4.6943336, 13.782718)
+
+[node name="右胳膊" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/右大胳膊关节" unique_id=1713909722]
+position = Vector2(24.219803, 3.7949028)
+rest = Transform2D(1, 0, 0, 1, 24.219803, 3.7949028)
+
+[node name="右小胳膊" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊" unique_id=1847332273]
+position = Vector2(24.918842, -2.2475662)
+rest = Transform2D(1, 0, 0, 1, 24.918842, -2.2475662)
+
+[node name="武器槽" type="Node2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊" unique_id=777399795 node_paths=PackedStringArray("背包组件引用")]
+position = Vector2(6.891384, -2.3471432)
+rotation = -1.6207694
+scale = Vector2(1.0000014, 1.0000014)
+script = ExtResource("10_cqanw")
+"背包组件引用" = NodePath("../../../../../../../../../../背包组件")
+
+[node name="右手" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/右大胳膊关节/右胳膊/右小胳膊" unique_id=1187561614]
+position = Vector2(11.935072, -1.5981789)
+rest = Transform2D(1, 0, 0, 1, 11.935072, -1.5981789)
+
+[node name="脖子" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔" unique_id=1427830786]
+position = Vector2(-9.987517, 0.49952286)
+rest = Transform2D(1, 0, 0, 1, -9.987517, 0.49952286)
+
+[node name="头" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/脖子" unique_id=1443199789]
+position = Vector2(-9.088669, -1.5479332)
+rest = Transform2D(1, 0, 0, 1, -9.088669, -1.5479332)
+
+[node name="面部" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部/胸腔/上胸腔/脖子/头" unique_id=1724604333]
+position = Vector2(-1.9975033, 0.099905014)
+rest = Transform2D(1, 0, 0, 1, -1.9975033, 0.099905014)
+
+[node name="动画播放器" type="AnimationPlayer" parent="骨骼动画序列/mi" unique_id=612492949]
+libraries/ = SubResource("AnimationLibrary_1dr63")
+script = ExtResource("14_i0m33")
+"配置名" = "玩家"
+
+[node name="初始插帧" type="Node" parent="骨骼动画序列/mi/动画播放器" unique_id=1494046673 node_paths=PackedStringArray("骨架", "动画播放器")]
+script = ExtResource("15_wl6fx")
+"骨架" = NodePath("../../骨架2D")
+"动画播放器" = NodePath("..")
+"属性名列表" = PackedStringArray("rotation", "position")
+"目标动画名" = "站立"
+
+[node name="切换到目标UI" type="Node" parent="." unique_id=1956719733]
+script = ExtResource("17_ibswv")
+"目标UI场景" = "res://场景/2D/UI/aaa.tscn"
+
+[node name="设置摄像头" type="Node" parent="." unique_id=1588772240]
+script = ExtResource("18_06g23")
+
+[connection signal="ready" from="." to="切换到目标UI" method="执行切UI"]
 [connection signal="输出节点" from="查找组件名物体" to="玩家属性设置" method="_on_查找组件名物体_输出节点"]

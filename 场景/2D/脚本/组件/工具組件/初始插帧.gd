@@ -1,0 +1,78 @@
+@tool
+extends Node
+class_name 初始插帧
+
+## 初始插帧器：为骨架中所有骨骼在指定时间插入当前姿态的关键帧
+## 目标动画名留空 = 对所有动画批量执行；填写 = 只处理该动画
+
+@export var 骨架: Skeleton2D
+@export var 动画播放器: AnimationPlayer
+@export var 属性名列表: PackedStringArray = ["rotation"]
+@export var 初始关键帧时间: float = 0.0
+
+@export_group("动画目标")
+@export var 目标动画名: String = ""
+## 留空 = 对所有动画执行；填写具体名字 = 只处理该动画
+
+@export_tool_button("执行初始插帧") var _执行按钮 = _执行初始插帧
+
+func _执行初始插帧() -> void:
+	if 骨架 == null or 动画播放器 == null:
+		push_error("[初始插帧器] 请先引用骨架和动画播放器")
+		return
+	var 动画列表 := _获取目标动画列表()
+	if 动画列表.is_empty():
+		push_error("[初始插帧器] 未找到目标动画（目标动画名='%s'）" % 目标动画名)
+		return
+	var 根节点 := 播放器根节点()
+	var 骨骼列表 := _收集骨骼(骨架)
+	if 骨骼列表.is_empty():
+		push_error("[初始插帧器] 骨架下没有 Bone2D")
+		return
+
+	var 总插帧 := 0
+	for 动画 in 动画列表:
+		var 本动画插帧 := 0
+		for 骨骼 in 骨骼列表:
+			var 相对 := str(根节点.get_path_to(骨骼))
+			for 属性名 in 属性名列表:
+				var 值 = 骨骼.get(属性名)
+				if 值 == null: continue
+				本动画插帧 += _确保轨道并插帧(动画, 相对 + ":" + 属性名, 值)
+		print("[初始插帧器] 「%s」：%d 根骨骼，插帧 %d" % [动画.resource_name, 骨骼列表.size(), 本动画插帧])
+		总插帧 += 本动画插帧
+
+	print("[初始插帧器] 完成，共 %d 个动画，总计插帧 %d" % [动画列表.size(), 总插帧])
+	EditorInterface.mark_scene_as_unsaved()
+
+func _确保轨道并插帧(动画: Animation, 路径: String, 值) -> int:
+	var np := NodePath(路径)
+	var 索引 := 动画.find_track(np, Animation.TYPE_VALUE)
+	if 索引 == -1:
+		索引 = 动画.add_track(Animation.TYPE_VALUE)
+		动画.track_set_path(索引, np)
+	动画.track_insert_key(索引, 初始关键帧时间, 值)
+	return 1
+
+func _获取目标动画列表() -> Array[Animation]:
+	var 结果: Array[Animation] = []
+	if 动画播放器 == null: return 结果
+	if 目标动画名 == "":
+		for 名 in 动画播放器.get_animation_list():
+			var 动画 := 动画播放器.get_animation(名)
+			if 动画: 结果.append(动画)
+	else:
+		if 动画播放器.has_animation(目标动画名):
+			结果.append(动画播放器.get_animation(目标动画名))
+	return 结果
+
+func 播放器根节点() -> Node:
+	var 根 := 动画播放器.get_node_or_null(动画播放器.root_node)
+	return 根 if 根 != null else 动画播放器
+
+func _收集骨骼(节点: Node) -> Array[Bone2D]:
+	var 结果: Array[Bone2D] = []
+	for 子 in 节点.get_children():
+		if 子 is Bone2D: 结果.append(子)
+		结果.append_array(_收集骨骼(子))
+	return 结果

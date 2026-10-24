@@ -12,12 +12,12 @@ func _on_button_down() -> void:
 	if name=="创建房间":
 		rpc联机方法.Chuang_jian_fang_jian()
 		while  rpc联机方法.shi_fou_chuang_jian_le==false:#保持等待直到房间被正确创建 
-			await get_tree().create_timer(1).timeout
+			await get_tree().create_timer(0.1).timeout
 		成功创建房间时.emit()
 	if name=="加入房间":
 		rpc联机方法.Jia_ru_fang_jian()
 		while  rpc联机方法.shi_fou_jia_ru_fang_jian_le==false:#保持等待直到房间被正确加入 
-			await get_tree().create_timer(1).timeout
+			await get_tree().create_timer(0.3).timeout
 		加入房间时.emit()
 	
 	#print("1",rpc联机方法.Chuang_jian_fang_jian)
@@ -30,7 +30,7 @@ func _on_button_down() -> void:
 		return
 	实体功能.类型判断()
 	
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.2).timeout
 	if 实体功能.服务还是客户!=1:
 			实体功能.场景同步器.请求场景同步(rpc联机方法.wang_luo_id)
 	

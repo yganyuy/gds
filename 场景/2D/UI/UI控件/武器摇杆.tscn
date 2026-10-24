@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://w6h6dfyevgxf"]
+
+[ext_resource type="Script" uid="uid://cip7ctwqmtnb1" path="res://场景/2D/脚本/UI脚本/武器摇杆.gd" id="1_iuwk8"]
+[ext_resource type="Texture2D" uid="uid://0dfpct728o80" path="res://场景/2D/贴图/Selection.png" id="2_twwcp"]
+[ext_resource type="Texture2D" uid="uid://fqnx8h6qoeuj" path="res://场景/2D/贴图/鸡.png" id="3_qejhb"]
+[ext_resource type="Script" uid="uid://bda2cr31nbxlv" path="res://场景/2D/脚本/UI脚本/仅限于某个模式.gd" id="4_x2ewh"]
+
+[node name="武器摇杆" type="VirtualJoystick" unique_id=115843624 node_paths=PackedStringArray("遥感图片")]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(1.125, 1.61)
+anchors_preset = -1
+anchor_left = 0.6883681
+anchor_top = 0.48919752
+anchor_right = 0.9913194
+anchor_bottom = 0.99074054
+offset_right = -182.4129
+offset_bottom = -169.86865
+scale = Vector2(2.095, 2.095)
+joystick_size = 170.0
+action_left = &"h"
+action_right = &"k"
+action_up = &"u"
+action_down = &"j"
+script = ExtResource("1_iuwk8")
+"遥感图片" = NodePath("摇杆")
+metadata/_edit_use_anchors_ = true
+
+[node name="底座" type="Sprite2D" parent="." unique_id=633942941]
+position = Vector2(85.87946, 76.84963)
+scale = Vector2(0.9639439, 1)
+texture = ExtResource("2_twwcp")
+metadata/_edit_lock_ = true
+
+[node name="摇杆" type="Sprite2D" parent="." unique_id=814947064]
+scale = Vector2(0.07805108, 0.08718957)
+texture = ExtResource("3_qejhb")
+offset = Vector2(1244.8677, 996.7163)
+region_rect = Rect2(116.96301, 91.8996, 782.5589, 811.71735)
+metadata/_edit_lock_ = true
+
+[node name="仅限于" type="Node" parent="." unique_id=1214461855]
+script = ExtResource("4_x2ewh")
+"仅显示在模式上" = 2
+"仅显示在设备上" = 2
+
+[connection signal="flicked" from="." to="." method="_on_flicked"]

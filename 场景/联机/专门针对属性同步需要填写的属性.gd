@@ -37,7 +37,7 @@ func _设置属性(物体: Node, 属性路径: String, 值) -> bool:
 			return false
 		if not (属性名 in 组件节点):
 			push_warning("[属性依赖] 组件 " + 组件类名 + " 上找不到属性: " + 属性名)
-			return false
+			return true
 		return false
 	# 3. 组件节点上找属性
 	_写入(组件节点, 属性名, 值)

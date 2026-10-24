@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://dn3gvmyh3mhsy"]
+
+[ext_resource type="Script" uid="uid://e5dyijpun6yv" path="res://场景/2D/地图/关卡/map1/标准2D地图节点.gd" id="1_44nqa"]
+[ext_resource type="Texture2D" uid="uid://bqgjbrddae5be" path="res://场景/2D/贴图/untitled2.png" id="2_46iws"]
+[ext_resource type="PackedScene" uid="uid://bp6p7gdwrlu2d" path="res://场景/2D/装置/地板.tscn" id="3_46iws"]
+[ext_resource type="Script" uid="uid://btu4j8wddwsqk" path="res://场景/2D/脚本/直接生成物体节点.gd" id="4_sx341"]
+[ext_resource type="PackedScene" uid="uid://b2i1nfcp3dpaw" path="res://场景/2D/角色/玩家.tscn" id="5_gbmq8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gbmq8"]
+resource_local_to_scene = true
+size = Vector2(51200, 512)
+
+[node name="map1" type="Node2D" unique_id=708984934]
+script = ExtResource("1_44nqa")
+
+[node name="背景" type="Node2D" parent="." unique_id=1184075086]
+
+[node name="Untitled" type="Sprite2D" parent="背景" unique_id=1775074673]
+scale = Vector2(128, 128)
+texture = ExtResource("2_46iws")
+region_rect = Rect2(-1.9487305, 1.9486694, 512, 512)
+
+[node name="地板" type="Node2D" parent="." unique_id=1273399105]
+
+[node name="地板" parent="地板" unique_id=2054287262 instance=ExtResource("3_46iws")]
+position = Vector2(4496, 397)
+"横向份数" = 100.0
+
+[node name="地面" parent="地板/地板" index="0" unique_id=408172249]
+region_rect = Rect2(0, 0, 51200, 512)
+
+[node name="碰撞形状2D" parent="地板/地板" index="1" unique_id=1889526575]
+position = Vector2(0, 25)
+shape = SubResource("RectangleShape2D_gbmq8")
+
+[node name="墙体" type="Node2D" parent="." unique_id=1686694427]
+
+[node name="玩家节点" type="Node2D" parent="." unique_id=1057687757]
+
+[node name="直接生成物体节点" type="Node" parent="." unique_id=110833622 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("4_sx341")
+"生成的场景" = ExtResource("5_gbmq8")
+"目标节点" = NodePath("../玩家节点")
+"延迟计时" = 2.0
+
+[connection signal="当创建房间时" from="." to="直接生成物体节点" method="直接生成物体"]
+[connection signal="当有玩家进入时" from="." to="直接生成物体节点" method="直接生成物体"]
+
+[editable path="地板/地板"]

@@ -1,5 +1,5 @@
 extends TextureButton
-class_name 跳跃按钮
+class_name 跳跃按钮_2D
 
 ## 键盘跳跃键（留空 = 不监听键盘）
 @export var 键盘跳跃动作: StringName = &""##这两种满足其一的条件就可以 但第一个这个属性的 优先级最高 
@@ -34,14 +34,14 @@ func _on_button_up() -> void:##当按钮抬起时
 	_尝试取消跳跃()
 
 # ★ 独立函数：拿到"本地玩家"的移动组件（找不到返回 null）
-func _取本地移动组件() -> 移动组件:
+func _取本地移动组件() -> 移动组件_2D:
 	if 玩家当前角色 == null or 玩家当前角色.玩家角色.size() <= 0:
 		return null
 	var 玩家 = 玩家当前角色.玩家角色[0]
 	if 玩家 == null or not is_instance_valid(玩家):
 		return null
 	var 组件 = 玩家.get_node_or_null("移动组件")
-	return 组件 as 移动组件
+	return 组件 as 移动组件_2D
 
 func _尝试跳跃() -> void:
 	var 组件 = _取本地移动组件()

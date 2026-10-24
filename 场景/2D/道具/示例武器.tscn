@@ -9,6 +9,6 @@
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_tx")
 
-[node name="武器" type="Node" parent="." unique_id=644407243]
+[node name="武器_2D" type="Node" parent="." unique_id=634660028 node_paths=PackedStringArray("武器本体")]
 script = ExtResource("1_wp")
-"武器名称" = "name"
+"武器本体" = NodePath("..")

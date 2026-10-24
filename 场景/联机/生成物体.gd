@@ -47,18 +47,22 @@ func 类型判断():
 		服务还是客户=1
 	else:服务还是客户=2
 
-func 生成物体(生成素材:PackedScene=null,节点:Node2D=null,挂载属性同步器:bool=true):
+func 生成物体(生成素材:PackedScene=null,节点:Node2D=null,挂载属性同步器:bool=true,申请者的ID:int=-1)->int:
 	类型判断()
 	if 是联机么==true and 服务还是客户!=0:
 		if 服务还是客户==2:
 			var pid =网络管理器.wang_luo_id
+			if 申请者的ID!=-1:pid=申请者的ID
 			客户端生成物体(生成素材,节点,pid,挂载属性同步器)
+			return self.当前ID#######$$$$$$$$@@@@@@@@@@@@
 		elif 服务还是客户==1:
 			var pid =网络管理器.wang_luo_id
-			服务端生成物体(生成素材,节点,当前ID,pid,挂载属性同步器)
+			if 申请者的ID!=-1:pid=申请者的ID
+			return 服务端生成物体(生成素材,节点,当前ID,pid,挂载属性同步器)
 	elif 是联机么==false or 服务还是客户==0:
 		var pid = 0
-		单机生成(生成素材,节点,当前ID,pid)
+		return 单机生成(生成素材,节点,当前ID,pid)
+	return 0
 
 func 删除物体(ID:int):
 	类型判断()
@@ -74,11 +78,12 @@ func 属性同步(ID:int,数据:Dictionary):
 	if 服务还是客户==1:
 		rpc("rpc同步属性",ID,数据)
 
-func 单机生成(生成素材,节点,ID,pid):
-	if 生成素材==null or 节点==null: return
+func 单机生成(生成素材,节点,ID,pid)->int:
+	if 生成素材==null or 节点==null: return 0
 	self.当前ID += 1
 	ID=当前ID
 	_生成(生成素材,节点,ID,pid,false)
+	return ID
 
 func 单机删除(ID):
 	if 物体表!=null:
@@ -86,12 +91,13 @@ func 单机删除(ID):
 		if 设置物体==null:return
 		设置物体.queue_free()
 
-func 服务端生成物体(生成素材,节点,ID,pid,挂载属性同步器):
+func 服务端生成物体(生成素材,节点,ID,pid,挂载属性同步器)->int:
 	类型判断()
 	self.当前ID += 1
 	ID=当前ID
 	_生成(生成素材,节点,ID,pid,挂载属性同步器)
 	rpc同步生成.rpc(生成素材.resource_path, 节点.get_path(),self.当前ID,pid,挂载属性同步器)
+	return ID
 
 func 服务端删除物体(ID):
 	类型判断()

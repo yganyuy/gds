@@ -1,0 +1,60 @@
+@tool
+class_name 自动_多边形
+extends Polygon2D
+
+func _ready() -> void:
+	if not is_inside_tree():
+		return
+
+	# 1. 向上查找父级精灵节点并继承纹理
+	var sprite := _find_parent_sprite(self)
+	if sprite and sprite.texture != null:
+		texture = sprite.texture
+		print("[自动_多边形] 已继承纹理: ", sprite.name)
+	else:
+		push_warning("[自动_多边形] 未找到带纹理的精灵父级: ", name)
+
+	# 2. 查找与精灵节点同级的骨架节点
+	var skeleton := _find_sibling_skeleton(sprite)
+	if skeleton:
+		skeleton = skeleton.get_path() # 替换为 NodePath 供属性赋值
+		print("[自动_多边形] 已绑定骨架: ", skeleton)
+	else:
+		push_warning("[自动_多边形] 未找到同级骨架节点: ", name)
+
+	# 3. 同步骨架中的同名骨骼到多边形
+	if skeleton:
+		_sync_bones_from_skeleton(skeleton)
+
+	# 4. 完成设置后自动移除自身脚本
+	set_script(null)
+	print("[自动_多边形] 设置完成，脚本已自动卸载: ", name)
+
+# 向上递归查找 Sprite2D 父级
+func _find_parent_sprite(node: Node) -> Sprite2D:
+	var current := node.get_parent()
+	while current:
+		if current is Sprite2D:
+			return current
+		current = current.get_parent()
+	return null
+
+# 在精灵节点的同级中查找 Skeleton2D
+func _find_sibling_skeleton(sprite: Sprite2D) -> Skeleton2D:
+	if not sprite:
+		return null
+	for sibling in sprite.get_parent().get_children():
+		if sibling is Skeleton2D:
+			return sibling
+	return null
+
+# 按名称匹配并同步骨骼到多边形
+func _sync_bones_from_skeleton(skeleton: Skeleton2D) -> void:
+	clear_bones()
+	var bone_paths := PackedStringArray()
+	for child in skeleton.get_children():
+		if child is Bone2D:
+			bone_paths.append(get_path_to(child))
+	for path in bone_paths:
+		add_bone(path, PackedFloat32Array())
+	print("[自动_多边形] 已同步骨骼路径，数量: ", bone_paths.size())

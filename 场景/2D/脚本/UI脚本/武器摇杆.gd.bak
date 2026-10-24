@@ -1,0 +1,45 @@
+extends VirtualJoystick
+
+@export var 遥感图片: Node2D = null
+var 武器槽: Node2D = null
+
+var _摇杆向量: Vector2 = Vector2.ZERO
+var _上次发送角度: float = 0.0
+const 角度变化阈值: float = 0.05   # 弧度，约 3°
+
+
+func _process(_delta: float) -> void:
+	# ① 键盘输入
+	var 键盘向量 := Input.get_vector("h", "k", "u", "j")
+
+	# ② 合并：键盘优先，否则用摇杆
+	var 输入向量 := 键盘向量 if 键盘向量.length_squared() > 0.01 else _摇杆向量
+
+	if 输入向量.length_squared() < 0.01:
+		return   # 死区
+
+	# ③ 找槽
+	if 武器槽 == null:
+		if 玩家当前角色.玩家角色.size() <= 0: return
+		武器槽 = 实体功能.查找器.FIND(玩家当前角色.玩家角色[0], "武器槽组件", -1, true)
+		if 武器槽 == null: return
+	if 武器槽.当前武器 == null: return
+
+	# ④ 节流
+	var 角度 := 输入向量.angle()
+	if abs(角度 - _上次发送角度) < 角度变化阈值:
+		return
+	_上次发送角度 = 角度
+
+	# ⑤ 发请求（注意：客户端只发，不改本地 rotation）
+	var 武器ID: int = 武器槽.当前武器.get_meta("id", 0)
+	if 武器ID <= 0: return
+	武器槽.rotation=角度
+	#远程函数调用.申请调用(武器ID, "", "修改角度", [输入向量, 角度])
+	_on_flicked(输入向量)
+
+
+func _on_flicked(输出向量: Vector2) -> void:
+	_摇杆向量 = 输出向量                  # ★ 只记录，不直接处理
+	if 遥感图片 != null:
+		遥感图片.position = 输出向量 * 100

@@ -1,5 +1,5 @@
 extends Node
-class_name 物理组件
+class_name 物理组件_2D
 
 ## 速度向量 (X,Y)
 @export var 速度向量: Vector2 = Vector2.ZERO
@@ -26,7 +26,7 @@ func _ready() -> void:
 		
 	# 自动查找父级是否存在移动组件，并设置引用的物理组件为 self
 	for 子节点 in 目标节点.get_children():
-		if 子节点 is 移动组件:
+		if 子节点 is 移动组件_2D:
 			子节点.引用的物理组件 = self
 			break
 	if 重力==0:
