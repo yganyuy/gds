@@ -12,10 +12,10 @@
 [node name="控件" type="Control" parent="." unique_id=1849564705]
 custom_minimum_size = Vector2(0.42, 0.475)
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1150.0
-offset_bottom = 646.0
+anchor_right = 0.9982639
+anchor_bottom = 0.99691355
 metadata/_edit_lock_ = true
+metadata/_edit_use_anchors_ = true
 
 [node name="虚拟摇杆" parent="控件" unique_id=1209524041 instance=ExtResource("1_faaic")]
 layout_mode = 0
@@ -32,10 +32,12 @@ offset_bottom = 475.1312
 [node name="切换UI" type="TextureButton" parent="控件" unique_id=1173460930]
 custom_minimum_size = Vector2(3.545, 2.345)
 layout_mode = 0
-offset_left = 915.0
-offset_top = 10.0
-offset_right = 1139.0
-offset_bottom = 216.0
+anchor_left = 0.79565215
+anchor_top = 0.015479876
+anchor_right = 0.99043477
+anchor_bottom = 0.33436534
+offset_bottom = -1.5258789e-05
+metadata/_edit_use_anchors_ = true
 
 [node name="精灵" type="Sprite2D" parent="控件/切换UI" unique_id=983864898]
 position = Vector2(112, 104)
@@ -56,11 +58,17 @@ metadata/_edit_lock_ = true
 
 [node name="跳跃按钮" parent="控件" unique_id=131461790 instance=ExtResource("3_xogpa")]
 layout_mode = 0
-offset_left = 928.0
-offset_top = 437.0
-offset_right = 1152.0
-offset_bottom = 643.0
+anchor_left = 0.61391306
+anchor_top = 0.22910216
+anchor_right = 0.75026083
+anchor_bottom = 0.452322
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 67.20007
+offset_bottom = 61.799988
+scale = Vector2(0.7, 0.7)
 "跳跃按键" = 4194309
+metadata/_edit_use_anchors_ = true
 
 [node name="仅限于" type="Node" parent="控件/跳跃按钮" unique_id=27184842]
 script = ExtResource("5_3ai5u")
@@ -75,5 +83,7 @@ script = ExtResource("4_1cxf1")
 layout_mode = 1
 anchor_left = 0.6965218
 anchor_top = 0.50154805
-anchor_right = 0.9994731
-anchor_bottom = 1.0030911
+anchor_right = 0.99889606
+anchor_bottom = 1.0013908
+offset_right = -181.74933
+offset_bottom = -168.77026

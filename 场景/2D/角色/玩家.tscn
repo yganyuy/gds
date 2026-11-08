@@ -1023,8 +1023,9 @@ script = ExtResource("1_xtemi")
 script = ExtResource("9_vy442")
 "阵营" = 1
 
-[node name="物理组件" type="Node" parent="." unique_id=45619484]
+[node name="物理组件" type="Node" parent="." unique_id=45619484 node_paths=PackedStringArray("目标节点")]
 script = ExtResource("6_n4uw4")
+"目标节点" = NodePath("..")
 
 [node name="背包组件" type="MaterialContainer" parent="." unique_id=1391121192]
 script = ExtResource("11_14ahd")
@@ -1247,7 +1248,7 @@ metadata/_edit_lock_ = true
 [node name="腹部" type="Bone2D" parent="骨骼动画序列/mi/骨架2D" unique_id=491765200]
 position = Vector2(0, 17.000002)
 rotation = 1.6207694
-scale = Vector2(0.99999857, 0.99999857)
+scale = Vector2(0.99999833, 0.99999833)
 rest = Transform2D(-0.049952235, 0.99875116, -0.99875116, -0.049952235, 0, 17.000002)
 
 [node name="右大腿关节" type="Bone2D" parent="骨骼动画序列/mi/骨架2D/腹部" unique_id=2005302166]

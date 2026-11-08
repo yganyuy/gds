@@ -83,6 +83,26 @@ offset_bottom = 88.0
 placeholder_text = "ipv4:"
 script = ExtResource("3_21sls")
 
+[node name="单行文本输入2" type="LineEdit" parent="画布层/控件" unique_id=866074356]
+visible = false
+layout_mode = 0
+offset_left = 344.0
+offset_top = 90.0
+offset_right = 659.0
+offset_bottom = 122.0
+placeholder_text = "账号id："
+script = ExtResource("3_21sls")
+
+[node name="单行文本输入3" type="LineEdit" parent="画布层/控件" unique_id=326416049]
+visible = false
+layout_mode = 0
+offset_left = 344.0
+offset_top = 124.0
+offset_right = 659.0
+offset_bottom = 156.0
+placeholder_text = "账号密码："
+script = ExtResource("3_21sls")
+
 [node name="节点2" type="Node" parent="." unique_id=1247827442 node_paths=PackedStringArray("目标节点")]
 script = ExtResource("4_cmq7g")
 "生成的场景" = ExtResource("5_cmq7g")
@@ -102,3 +122,5 @@ script = ExtResource("8_bdeds")
 [connection signal="button_down" from="画布层/控件/创建房间" to="节点2" method="直接生成物体"]
 [connection signal="button_down" from="画布层/控件/加入房间" to="画布层/控件/加入房间" method="_on_button_down"]
 [connection signal="text_changed" from="画布层/控件/单行文本输入" to="画布层/控件/单行文本输入" method="_on_text_changed"]
+[connection signal="text_changed" from="画布层/控件/单行文本输入2" to="画布层/控件/单行文本输入2" method="_on_text_changed"]
+[connection signal="text_changed" from="画布层/控件/单行文本输入3" to="画布层/控件/单行文本输入3" method="_on_text_changed"]

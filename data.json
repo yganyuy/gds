@@ -1,0 +1,1 @@
+{ "table_name": "NewTable", "headers": [{ "name": "attack", "type": "int", "default": 0 }], "rows": {} }

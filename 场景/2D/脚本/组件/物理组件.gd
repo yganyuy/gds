@@ -16,7 +16,7 @@ enum 物理模式 {
 }
 var 当前物理模式: 物理模式 = 物理模式.平台跳跃
 
-var 目标节点: Node2D = null
+@export var 目标节点: Node2D = null
 
 func _ready() -> void:
 	目标节点 = get_parent() as Node2D

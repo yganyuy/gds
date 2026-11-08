@@ -10,6 +10,7 @@ signal 动画开始(动画名: String)
 signal 动画播放完毕(动画名: String)
 
 @export var 配置名: String = "默认"
+@export var 调试: bool = true
 @export_range(0.01, 10.0, 0.05) var 默认速度倍率: float = 1.0
 
 var 当前速度倍率: float = 1.0
@@ -39,25 +40,38 @@ func 播放动画(播放的动画名称: String, 循环播放: bool = true,
 
 	if current_animation == 播放的动画名称 and is_playing():
 		_应用倍率(目标倍率)
+		if 调试:
+			print("[动画] 同动画倍率更新: ", 播放的动画名称, " → ", 目标倍率)
 		return true
 
-	# 记录"从哪个动画过来"——必须在 play() 之前
+	# 来源必须在 play 之前记录
 	var 来源: String = current_animation if is_playing() else ""
 
-	# 混合秒数解析
+	# 混合秒数解析（动画时间维度）
 	var 混合: float = 覆盖混合秒数
 	if 混合 < 0.0:
 		混合 = 动画速度表.获取渐变时长(配置名, 来源, 播放的动画名称)
 
+	# ★ 关键补偿：混合时长会被 speed_scale 缩放，
+	# 除以目标倍率让混合按"真实墙钟时间"生效，观感一致
+	var 真实混合: float = 混合 / maxf(目标倍率, 0.01) if 混合 > 0.0 else 0.0
+
 	_应用倍率(目标倍率)
-	if 混合 > 0.0:
-		play(播放的动画名称, 混合)
+	if 真实混合 > 0.0:
+		play(播放的动画名称, 真实混合)
 	else:
 		play(播放的动画名称)
 
+	if 调试:
+		print("[动画] ", 来源 if 来源 != "" else "(空)", " → ", 播放的动画名称,
+			" | 配置=", 配置名,
+			" 倍率=", 目标倍率,
+			" speed_scale实际=", speed_scale,
+			" 混合(动画时间)=", 混合,
+			" 混合(真实时间)=", 真实混合)
+
 	动画开始.emit(播放的动画名称)
 	return true
-
 func 停止播放() -> void:
 	if is_playing():
 		stop()
@@ -94,6 +108,8 @@ func _应用倍率(倍率: float) -> void:
 		倍率 = 0.01
 	当前速度倍率 = 倍率
 	speed_scale = 倍率
+	if 调试:
+		print("[动画] speed_scale 设为 ", speed_scale, " (由 ", 倍率, " 传入)")
 
 func _内部_动画结束(动画名: String) -> void:
 	动画播放完毕.emit(动画名)

@@ -1,4 +1,4 @@
-#include "my_locator.h"
+#include "Locator/my_Locator.h"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <cassert>    // 必须包含，否则 assert 会报错

@@ -1,22 +1,23 @@
 [gd_scene format=3 uid="uid://db0w7181f2m37"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_euocq"]
+[ext_resource type="Script" uid="uid://to10ulp4rh00" path="res://场景/2D/脚本/组件/工具組件/图片分身.gd" id="1_4edr6"]
+[ext_resource type="Texture2D" uid="uid://ybvxke1a33s1" path="res://场景/2D/贴图/Untitled 10-25-2026 03-50-28.png" id="2_qo8os"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_wvhbo"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3sx68"]
+resource_local_to_scene = true
+size = Vector2(512, 4096)
 
-[node name="墙" type="StaticBody2D" unique_id=1187106736]
+[node name="墙" type="StaticBody2D" unique_id=1187106736 node_paths=PackedStringArray("图片节点", "碰撞形状")]
+script = ExtResource("1_4edr6")
+"纵向份数" = 8.0
+"图片节点" = NodePath("精灵")
+"碰撞形状" = NodePath("碰撞形状2D")
+
+[node name="精灵" type="Sprite2D" parent="." unique_id=567301995]
+texture_repeat = 2
+texture = ExtResource("2_qo8os")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 4096)
 
 [node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=481520992]
-shape = SubResource("RectangleShape2D_euocq")
-metadata/_edit_lock_ = true
-
-[node name="动画精灵" type="AnimatedSprite2D" parent="." unique_id=328930269]
-sprite_frames = SubResource("SpriteFrames_wvhbo")
-metadata/_edit_lock_ = true
-
-[node name="标签" type="Label" parent="." unique_id=139300086]
-offset_left = -8.0
-offset_top = -11.0
-offset_right = 8.0
-offset_bottom = 12.0
-text = "墙"
+shape = SubResource("RectangleShape2D_3sx68")

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="Table2D" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		通用二维表管理器：支持动态定义列、极速内存操作（增删改查），以及手动的磁盘读写。
+	</brief_description>
+	<description>
+		这是一个完全解耦的二维数据表容器。它不局限于“物品表”，你可以用它来管理任何类似 Excel 的表格数据（如：怪物表、技能表、任务表等）。
+
+		[b]核心机制：[/b]
+		1. [b]内存优先[/b]：所有增加/删除/查询操作都在极速的内存中进行（O(1) 哈希索引），不会产生任何磁盘 I/O。
+		2. [b]手动存盘[/b]：数据的保存和加载完全由调用者手动控制，你可以随时把内存里的表存到任意指定的路径（支持“另存为”）。
+		3. [b]动态表头[/b]：支持随时添加新列，并可为列指定类型（string/int/bool/float）和默认值。
+
+		[b]⚠️ 路径警告：[/b]
+		在 Android 或打包后的正式游戏中，[code]res://[/code] 目录是只读的。如果需要进行文件修改操作，请务必使用 [code]user://[/code] 路径。
+	</description>
+	<tutorials>
+	</tutorials>
+
+	<methods>
+
+		<method name="load_from_json">
+			<return type="bool" />
+			<param index="0" name="path" type="String" />
+			<description>
+				从指定的 JSON 文件读取数据到内存中。如果文件不存在或格式错误，返回 [code]false[/code]。
+				注意：这会覆盖当前内存中的所有数据。
+			</description>
+		</method>
+
+		<method name="save_to_json">
+			<return type="bool" />
+			<param index="0" name="path" type="String" />
+			<description>
+				将当前内存中的二维表数据保存到指定的 JSON 文件中。
+				成功返回 [code]true[/code]，失败（如路径不可写）返回 [code]false[/code]。
+			</description>
+		</method>
+
+		<method name="add_column">
+			<return type="void" />
+			<param index="0" name="col_name" type="String" />
+			<param index="1" name="type" type="String" />
+			<param index="2" name="default" type="String" />
+			<description>
+				在内存中向表头添加一个新列，并为所有已存在的行赋予默认值。
+
+				[param col_name] 新列的名称（如 "attack"）。
+				[param type] 列的数据类型，支持：[code]"string"[/code]、[code]"int"[/code]、[code]"bool"[/code]、[code]"float"[/code]。
+				[param default] 该列的默认值（必须转成字符串传入，如 [code]"0"[/code] 或 [code]"false"[/code]）。
+
+				[b]示例：[/b]
+				[codeblock]
+				# 为表增加一列“攻击力”，类型为整数，默认值为 0
+				表.add_column("attack", "int", "0")
+				[/codeblock]
+			</description>
+		</method>
+
+		<method name="add_row">
+			<return type="void" />
+			<param index="0" name="row_name" type="String" />
+			<param index="1" name="data" type="Array" />
+			<description>
+				在内存中追加一行新数据。如果数据未填满，将自动使用表头的默认值补全。
+
+				[param row_name] 新行的名称（作为唯一标识）。如果传入空字符串 [code]""[/code]，系统会自动递增生成（如 "1"、"2"）。
+				[param data] 一个数组，包含该行各列的值。顺序必须与表头的列顺序一致。
+
+				[b]示例：[/b]
+				[codeblock]
+				# 指定行名，提供部分数据，其余列自动补全默认值
+				表.add_row("Sword_01", ["Iron Sword", "50"])
+				
+				# 自动生成行名（如 "2"），全用默认值
+				表.add_row("", [])
+				[/codeblock]
+			</description>
+		</method>
+
+		<method name="remove_row">
+			<return type="void" />
+			<param index="0" name="row_name" type="String" />
+			<description>
+				从内存中移除指定名称的一行。如果该行不存在，则静默跳过。
+			</description>
+		</method>
+
+		<method name="remove_column">
+			<return type="void" />
+			<param index="0" name="col_name" type="String" />
+			<description>
+				从内存中移除指定名称的一整列（包括表头定义以及所有行中对应的数据）。如果该列不存在，则静默跳过。
+			</description>
+		</method>
+
+		<method name="get_value">
+			<return type="String" />
+			<param index="0" name="row" type="String" />
+			<param index="1" name="col" type="String" />
+			<description>
+				极速查询某行某列的值（时间复杂度 O(1)）。如果行或列不存在，返回空字符串。
+
+				[b]⚠️ 类型转换注意：[/b]
+				返回结果统一为 [String] 类型。请根据表头定义的 [code]type[/code]，在 GDScript 中自行使用 [code]int()[/code]、[code]bool()[/code] 或 [code]float()[/code] 进行类型转换。
+			</description>
+		</method>
+
+	</methods>
+	<members>
+	</members>
+</class>

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bkuk3rkikfvu8"]
+
+[ext_resource type="Script" uid="uid://to10ulp4rh00" path="res://场景/2D/脚本/组件/图片分身.gd" id="1_0qenh"]
+[ext_resource type="Texture2D" uid="uid://bqgjbrddae5be" path="res://场景/2D/贴图/untitled2.png" id="2_abguw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ks6fp"]
+resource_local_to_scene = true
+size = Vector2(512, 512)
+
+[node name="地板2" type="StaticBody2D" unique_id=2054287262 node_paths=PackedStringArray("图片节点", "碰撞形状")]
+script = ExtResource("1_0qenh")
+"图片节点" = NodePath("地面")
+"碰撞形状" = NodePath("碰撞形状2D")
+
+[node name="地面" type="Sprite2D" parent="." unique_id=408172249]
+modulate = Color(1, 0, 0, 0.5176471)
+texture_repeat = 2
+texture = ExtResource("2_abguw")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 512)
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=1889526575]
+shape = SubResource("RectangleShape2D_ks6fp")

@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://b1onghy2lpsce"]
+
+[ext_resource type="Texture2D" uid="uid://ybvxke1a33s1" path="res://场景/2D/贴图/Untitled 10-25-2026 03-50-28.png" id="1_igc3s"]
+[ext_resource type="PackedScene" uid="uid://db0w7181f2m37" path="res://场景/2D/装置/墙.tscn" id="2_8y1rc"]
+[ext_resource type="Script" uid="uid://c1r5v88pl0u8w" path="res://场景/2D/debug/自动追踪bata.gd" id="3_kir78"]
+[ext_resource type="Script" uid="uid://dptdtvaj284rd" path="res://场景/2D/脚本/组件/物理组件.gd" id="4_csutm"]
+[ext_resource type="Texture2D" uid="uid://bmx385p33dv65" path="res://icon.svg" id="5_d5403"]
+[ext_resource type="Script" uid="uid://che8rvf7wcw0x" path="res://场景/2D/debug/区域2d.gd" id="6_jixuu"]
+[ext_resource type="Script" uid="uid://dkpmcnnegrh5d" path="res://场景/2D/脚本/摄像头管理.gd" id="7_csutm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wlgux"]
+
+[node name="寻路测试" type="Node2D" unique_id=1049146750]
+
+[node name="二维世界根节点" type="Node2D" parent="." unique_id=963475922]
+
+[node name="精灵" type="Sprite2D" parent="二维世界根节点" unique_id=2025609426]
+texture = ExtResource("1_igc3s")
+metadata/_edit_lock_ = true
+
+[node name="墙" parent="二维世界根节点" unique_id=1187106736 instance=ExtResource("2_8y1rc")]
+position = Vector2(173, 69)
+rotation = -3.1415925
+scale = Vector2(0.03, 0.03)
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="二维世界根节点" unique_id=130211891 node_paths=PackedStringArray("tracker", "target_node")]
+position = Vector2(-197, -62)
+script = ExtResource("3_kir78")
+tracker = NodePath("低性能追踪_2D")
+target_node = NodePath("../CharacterBody2D2")
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="二维世界根节点/CharacterBody2D" unique_id=457345799]
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="精灵" type="Sprite2D" parent="二维世界根节点/CharacterBody2D" unique_id=1641625591]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("5_d5403")
+
+[node name="低性能追踪_2D" type="SimpleTracker2D" parent="二维世界根节点/CharacterBody2D" unique_id=630533515]
+probe_radius = 0.0
+expected_move_speed = 40.0
+
+[node name="摄像头管理" type="Node" parent="二维世界根节点" unique_id=227132766]
+script = ExtResource("7_csutm")
+"方式" = 2
+"自由最小缩放" = 0.255
+
+[node name="CharacterBody2D2" type="CharacterBody2D" parent="二维世界根节点" unique_id=1125290048 node_paths=PackedStringArray("tracker")]
+position = Vector2(215, 64)
+script = ExtResource("3_kir78")
+tracker = NodePath("低性能追踪_2D")
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="二维世界根节点/CharacterBody2D2" unique_id=64289302]
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="物理组件" type="Node" parent="二维世界根节点/CharacterBody2D2" unique_id=1830051270 node_paths=PackedStringArray("目标节点")]
+script = ExtResource("4_csutm")
+"重力" = 0.0
+"质量" = 0.0
+"目标节点" = NodePath("..")
+
+[node name="精灵" type="Sprite2D" parent="二维世界根节点/CharacterBody2D2" unique_id=1019658543]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("5_d5403")
+
+[node name="低性能追踪_2D" type="SimpleTracker2D" parent="二维世界根节点/CharacterBody2D2" unique_id=647334209]
+
+[node name="区域2D" type="Area2D" parent="二维世界根节点/CharacterBody2D2" unique_id=450400978 node_paths=PackedStringArray("f")]
+monitorable = false
+script = ExtResource("6_jixuu")
+f = NodePath("..")
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="二维世界根节点/CharacterBody2D2/区域2D" unique_id=1071138127]
+scale = Vector2(12.307044, -12.261183)
+shape = SubResource("CircleShape2D_wlgux")
+
+[node name="墙2" parent="二维世界根节点" unique_id=106488092 instance=ExtResource("2_8y1rc")]
+position = Vector2(-261, -35)
+rotation = -3.1415925
+scale = Vector2(0.03, 0.03)
+
+[node name="墙3" parent="二维世界根节点" unique_id=1465332811 instance=ExtResource("2_8y1rc")]
+position = Vector2(-162, -148)
+rotation = -3.5736713
+scale = Vector2(0.03, 0.03)
+
+[node name="墙4" parent="二维世界根节点" unique_id=1355276193 instance=ExtResource("2_8y1rc")]
+position = Vector2(-327.99994, 97)
+rotation = -2.3851533
+scale = Vector2(0.03, 0.03)
+
+[node name="墙5" parent="二维世界根节点" unique_id=1043698826 instance=ExtResource("2_8y1rc")]
+position = Vector2(-140, -32.999996)
+rotation = -5.2823496
+scale = Vector2(0.03, 0.03)
+
+[node name="CharacterBody2D3" type="CharacterBody2D" parent="二维世界根节点" unique_id=1743768019 node_paths=PackedStringArray("tracker", "target_node")]
+position = Vector2(-334, 32)
+script = ExtResource("3_kir78")
+tracker = NodePath("低性能追踪_2D")
+target_node = NodePath("../CharacterBody2D2")
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="二维世界根节点/CharacterBody2D3" unique_id=675869354]
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="精灵" type="Sprite2D" parent="二维世界根节点/CharacterBody2D3" unique_id=1520867180]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("5_d5403")
+
+[node name="低性能追踪_2D" type="SimpleTracker2D" parent="二维世界根节点/CharacterBody2D3" unique_id=700182151]
+ray_count = 5
+half_fov_deg = 90.0
+lookahead_min = 90.0
+lookahead_max = 200.0
+stuck_timeout = 7.315
+
+[node name="CharacterBody2D4" type="CharacterBody2D" parent="二维世界根节点" unique_id=488552763 node_paths=PackedStringArray("tracker", "target_node")]
+position = Vector2(-327, -121)
+script = ExtResource("3_kir78")
+tracker = NodePath("低性能追踪_2D")
+target_node = NodePath("../CharacterBody2D2")
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="二维世界根节点/CharacterBody2D4" unique_id=146768438]
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="精灵" type="Sprite2D" parent="二维世界根节点/CharacterBody2D4" unique_id=1380665090]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("5_d5403")
+
+[node name="低性能追踪_2D" type="SimpleTracker2D" parent="二维世界根节点/CharacterBody2D4" unique_id=653822014]
+ray_count = 5
+half_fov_deg = 90.0
+lookahead_min = 90.0
+lookahead_max = 200.0
+stuck_timeout = 7.315
+
+[connection signal="area_entered" from="二维世界根节点/CharacterBody2D2/区域2D" to="二维世界根节点/CharacterBody2D2/区域2D" method="bata"]

@@ -1,0 +1,1 @@
+{ "table_name": "NewTable", "headers": [{ "name": "name", "type": "string", "default": "sb" }, { "name": "price", "type": "int", "default": 0 }], "rows": {} }

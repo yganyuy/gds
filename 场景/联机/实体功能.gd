@@ -1,15 +1,15 @@
 extends Node
-class_name 生成物体
+class_name 生成物体  ##在全局中叫做 实体功能 
 
 var 是联机么:bool=false
 @export var 网络管理器:联机创建器=null
 @export var 场景同步器:场景同步=null
-@export var 物体表:物体表=null
+@export var 自身物体表:物体表=null
 @export var 属性同步需要调用的节点:属性同步的依赖=null
 @export var 属性同步方式:int=2
 @export var 自动设置类型:bool=false
 
-var 服务还是客户:int=0
+var 服务还是客户:int=0##0=单机 1=服务端 2=客户端 
 var 当前ID:int=0
 var 初始化场景已经同步:bool=false
 var 查找器:CXT=CXT.new()
@@ -19,8 +19,9 @@ signal 生成时(生成物,当前ID)
 func _ready():
 	if get_parent() == get_tree().root:
 		print("已自动加载",name)
-		if 物体表==null:
-			物体表=全局物体表
+		if 自身物体表==null:
+			自身物体表=物体表.new()
+			self.add_child(自身物体表)
 		if 场景同步器==null:
 			var ou=场景同步.new()
 			self.add_child(ou)
@@ -73,11 +74,6 @@ func 删除物体(ID:int):
 	elif 服务还是客户==2:
 		rpc("rpc请求删除", ID)
 
-func 属性同步(ID:int,数据:Dictionary):
-	类型判断()
-	if 服务还是客户==1:
-		rpc("rpc同步属性",ID,数据)
-
 func 单机生成(生成素材,节点,ID,pid)->int:
 	if 生成素材==null or 节点==null: return 0
 	self.当前ID += 1
@@ -86,8 +82,8 @@ func 单机生成(生成素材,节点,ID,pid)->int:
 	return ID
 
 func 单机删除(ID):
-	if 物体表!=null:
-		var 设置物体 = 物体表.查找物体(ID)
+	if 自身物体表!=null:
+		var 设置物体 = 自身物体表.查找物体(ID)
 		if 设置物体==null:return
 		设置物体.queue_free()
 
@@ -110,17 +106,9 @@ func 客户端生成物体(生成素材,节点,pid,挂载属性同步器):
 	if 生成素材==null or 节点==null: return
 	rpc请求生成.rpc_id(1, 生成素材.resource_path, 节点.get_path(),pid,挂载属性同步器)
 
-func _同步(id:int,数据:Dictionary)-> bool:
-	if 物体表!=null:
-		var 设置物体 = 物体表.查找物体(id)
-		if 设置物体==null:return false
-		属性同步需要调用的节点.进行属性设置同步(设置物体,数据)
-		return true
-	else:return false
-
 func _删除(id) -> bool:
-	if 物体表!=null:
-		var 设置物体 = 物体表.查找物体(id)
+	if 自身物体表!=null:
+		var 设置物体 = 自身物体表.查找物体(id)
 		if 设置物体==null: return false
 		设置物体.queue_free()
 		return true
@@ -145,8 +133,8 @@ func _生成(生成素材,节点,ID,pid,挂载属性同步器:bool=true):
 				网络状态同步器.name= "网络状态同步器%d" % ID
 	生成物.name = str(生成物.name) + str(ID)
 	节点.add_child(生成物)
-	if 物体表!=null and 生成物!=null:
-		物体表.加入物体(生成物,ID)
+	if 自身物体表!=null and 生成物!=null:
+		自身物体表.加入物体(生成物,ID)
 	生成时.emit(生成物,ID)
 
 # 客户端强制同步服务端ID，避免本地ID错乱
@@ -182,7 +170,3 @@ func rpc请求删除(ID:int):
 	类型判断()
 	if 服务还是客户 == 2: return
 	服务端删除物体(ID)
-
-@rpc("any_peer", "call_local", "reliable")
-func rpc同步属性(ID:int,数据:Dictionary):
-	_同步(ID,数据)

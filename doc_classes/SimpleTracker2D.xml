@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="SimpleTracker2D" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+	<brief_description>
+		轻量级、基于形状扫掠避障（Shape Casting）的局部追踪组件。
+	</brief_description>
+	<description>
+		[SimpleTracker2D] 专为低地形复杂度的场景（如 RTS）设计，无需导航网格系统。
+		它使用 [code]PhysicsDirectSpaceState2D::cast_motion[/code] 向目标点投射带有物理体积的探测形状，完美解决了纯射线（Raycast）会从墙角擦边漏检导致物理卡死的问题。
+		组件只输出标准化的方向向量（长度为 1 或 0），你需要结合自身的移动速度进行移动。如果被卡住，组件会进入 HALTED 状态并完全停止运算（零开销）。
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_desired_direction">
+			<return type="Vector2" />
+			<description>
+				返回计算出的期望移动方向。长度为 1 或 0。
+			</description>
+		</method>
+		<method name="get_state">
+			<return type="int" enum="SimpleTracker2D.State" />
+			<description>
+				获取当前组件的状态。
+			</description>
+		</method>
+		<method name="get_target_position">
+			<return type="Vector2" />
+			<description>
+				获取当前追踪的目标点世界坐标。
+			</description>
+		</method>
+		<method name="has_target_position">
+			<return type="bool" />
+			<description>
+				是否已设置目标。
+			</description>
+		</method>
+		<method name="is_halted">
+			<return type="bool" />
+			<description>
+				组件是否处于卡死状态。
+			</description>
+		</method>
+		<method name="resume">
+			<return type="void" />
+			<description>
+				将组件从卡死状态唤醒。若目标已移动，通常在外部调用此方法让它重新尝试追踪。
+			</description>
+		</method>
+		<method name="set_target_position">
+			<return type="void" />
+			<description>
+				设置新的追踪目标点。
+			</description>
+			<param index="0" name="pos" type="Vector2" />
+		</method>
+		<method name="tick">
+			<return type="void" />
+			<description>
+				手动执行一次运算。当 [member update_interval] 设为 0 时需在外部调用。参数 [param dt] 为流逝时间（秒）。
+			</description>
+			<param index="0" name="dt" type="float" />
+		</method>
+	</methods>
+	<members>
+		<member name="expected_move_speed" type="float" setter="set_expected_move_speed" getter="get_expected_move_speed" default="120.0">
+			预期移动速度。此参数不参与直接移动，仅用于内部判断“位移是否不足（卡死）”，请与你外部实际移动速度保持一致。
+		</member>
+		<member name="half_fov_deg" type="float" setter="set_half_fov_deg" getter="get_half_fov_deg" default="60.0">
+			探测扇形的半角（度）。60 代表向正前方 120 度范围进行扫掠。
+		</member>
+		<member name="lookahead_max" type="float" setter="set_lookahead_max" getter="get_lookahead_max" default="96.0">
+			探测的最大距离。单位速度越快，此值应设得越大，防止高速移动时来不及避让。
+		</member>
+		<member name="lookahead_min" type="float" setter="set_lookahead_min" getter="get_lookahead_min" default="24.0">
+			探测的最小距离。防止贴近目标或障碍物时，探测过短导致判定失误。
+		</member>
+		<member name="obstacle_mask" type="int" setter="set_obstacle_mask" getter="get_obstacle_mask" default="1" enum="PhysicsServer2D">
+			障碍物物理层。请务必仅勾选静态地形层，不要勾选单位层，否则单位挤在一起时会互相判定为障碍物导致卡死。
+		</member>
+		<member name="probe_radius" type="float" setter="set_probe_radius" getter="get_probe_radius" default="9.0">
+			若 [member probe_shape_type] 为 [constant PROBE_CIRCLE]，此值代表圆形探测器的半径。建议比自身碰撞体半径略大 1~2 像素作为安全边际。
+		</member>
+		<member name="probe_shape_type" type="int" setter="set_probe_shape_type" getter="get_probe_shape_type" default="0" enum="SimpleTracker2D.ProbeShapeType">
+			探测器的形状类型。可选圆形（适合一般单位）或矩形（适合坦克等）。
+		</member>
+		<member name="probe_size" type="Vector2" setter="set_probe_size" getter="get_probe_size" default="Vector2(18, 18)">
+			若 [member probe_shape_type] 为 [constant PROBE_RECT]，此值代表探测器的长宽。
+		</member>
+		<member name="ray_count" type="int" setter="set_ray_count" getter="get_ray_count" default="9">
+			扇形探测的数量。数量越多避障越细腻平滑，但计算开销也会增加。
+		</member>
+		<member name="stop_distance" type="float" setter="set_stop_distance" getter="get_stop_distance" default="6.0">
+			到达目标的判定距离。当距离目标小于此值时，进入 FINISHED 状态并停止输出方向。
+		</member>
+		<member name="stuck_move_ratio" type="float" setter="set_stuck_move_ratio" getter="get_stuck_move_ratio" default="0.2">
+			卡死判定的位移比例。如果这一帧实际位移小于“预期位移乘以该比例”，则视为“没动”。
+		</member>
+		<member name="stuck_timeout" type="float" setter="set_stuck_timeout" getter="get_stuck_timeout" default="0.4">
+			卡死判定的超时时间（秒）。连续多久没动或探测全被挡住，就会进入卡死（HALTED）状态。
+		</member>
+		<member name="target_position" type="Vector2" setter="set_target_position" getter="get_target_position" default="Vector2(0, 0)">
+			当前追踪的目标点世界坐标。建议在外部实时更新此值以追踪移动单位。
+		</member>
+		<member name="update_interval" type="float" setter="set_update_interval" getter="get_update_interval" default="0.0">
+			组件的内部运算频率（秒）。如果大于 0（如 0.1 表示 10Hz），组件会自动在物理帧中累积时间并调用 tick。如果设为 0，组件将关闭内部自动计算，完全由你在外部调用 tick。
+		</member>
+	</members>
+	<constants>
+		<constant name="TRACKING" value="0" enum="State">
+			正在正常追踪并输出方向。
+		</constant>
+		<constant name="HALTED" value="1" enum="State">
+			卡死或被障碍物完全挡住。进入此状态后，组件停止运算并输出零向量。需要用 resume 恢复。
+		</constant>
+		<constant name="FINISHED" value="2" enum="State">
+			已到达目标，输出零向量。
+		</constant>
+		<constant name="PROBE_CIRCLE" value="0" enum="ProbeShapeType">
+			圆形探测器。
+		</constant>
+		<constant name="PROBE_RECT" value="1" enum="ProbeShapeType">
+			矩形探测器。
+		</constant>
+	</constants>
+</class>

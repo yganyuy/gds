@@ -49,11 +49,11 @@ func rpc_接收调用请求(物体ID: int, 组件名: String, 函数名: String,
 func _本地执行(物体ID: int, 组件名: String, 函数名: String, 参数: Array, 请求者: int) -> void:
 	var ef = 实体功能
 	#_获取实体功能()
-	if ef == null or ef.物体表 == null:
-		if debug: push_warning("[服务器调用] 物体表未初始化")
+	if ef == null or ef.自身物体表 == null:
+		if debug: push_warning("[服务器调用] 自身物体表未初始化")
 		return
 
-	var 物体 = ef.物体表.查找物体(物体ID)
+	var 物体 = ef.自身物体表.查找物体(物体ID)
 	if 物体 == null:
 		if debug: push_warning("[服务器调用] 找不到物体 ID=" + str(物体ID))
 		return

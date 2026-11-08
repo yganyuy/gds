@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="PhysicsSpace3D" inherits="Node3D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		创建一个独立的 3D 物理空间（平行宇宙），用于隔离不同房间/地图的物理碰撞。
+	</brief_description>
+	<description>
+		将此节点放置在场景中，任何添加到它下面的物理节点（如 CharacterBody3D, Area3D, RigidBody3D 等）将被自动移入一个全新的物理空间中。该空间内的物理碰撞和射线检测与其他节点完全隔离。
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_space_rid">
+			<return type="RID" />
+			<description>
+				获取当前独立物理空间的 RID。在使用手动射线检测时，请使用 PhysicsServer3D.space_get_direct_state(rid)。
+			</description>
+		</method>
+		<method name="register_node">
+			<return type="void" />
+			<param index="0" name="node" type="Node" />
+			<description>
+				手动将一个节点注册到当前物理空间中。
+			</description>
+		</method>
+	</methods>
+</class>

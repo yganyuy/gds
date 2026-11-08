@@ -21,7 +21,7 @@ var 节点缓存: Dictionary = {}
 
 func _ready():
 	await get_tree().create_timer(0.02).timeout##延迟查找 防止父节点未被初始化 
-	if 实体功能 and 实体功能.服务还是客户 == 2:##如果是客户端则不执行 
+	if 属性同步调用器 and 属性同步调用器.服务还是客户 == 2:##如果是客户端则不执行 
 		#queue_free()
 		return
 	父节点 = get_parent()
@@ -29,13 +29,13 @@ func _ready():
 		物体ID = 父节点.get_meta("id")
 		_保存当前值()
 	if 属性配置 == null:
-		属性配置 = 属性
+		属性配置 = 属性字典
 	if 初始化同步:
 		申请进行同步()
 	初始化 = true
 
 func _process(delta):
-	if 实体功能 == null or 实体功能.服务还是客户 != 1 or not 初始化:
+	if 属性同步调用器 == null or 属性同步调用器.服务还是客户 != 1 or not 初始化:
 		return
 	match 同步方式:
 		1:
@@ -101,7 +101,7 @@ func _查找组件节点(组件类名: String) -> Node:
 	
 	var 实体 = self.get_parent()
 	#print("实体:",实体,"组件类名:",组件类名)
-	var 节点 = 实体功能.查找器.FIND(实体,组件类名, 查找深度, 是否仅查找脚本名)
+	var 节点 = 属性同步调用器.查找器.FIND(实体,组件类名, 查找深度, 是否仅查找脚本名)
 	if 节点 != null:
 		节点缓存[组件类名] = weakref(节点)
 	return 节点
@@ -119,7 +119,7 @@ func 自动触发():
 	var 数据 = {}
 	for 属性名 in 属性配置.获取属性名列表():
 		数据[属性名] = _获取属性值(属性名)
-	实体功能.属性同步(物体ID, 数据)
+	属性同步调用器.属性同步(物体ID, 数据)
 
 func 变化时同步():
 	if not 初始化: return
@@ -130,10 +130,10 @@ func 变化时同步():
 			变化[属性名] = 当前值
 			上次值[属性名] = 当前值
 	if 变化.size() > 0:
-		实体功能.属性同步(物体ID, 变化)
+		属性同步调用器.属性同步(物体ID, 变化)
 
 func 申请进行同步():
-	if 实体功能 == null or 实体功能.服务还是客户 != 1 \
+	if 属性同步调用器 == null or 属性同步调用器.服务还是客户 != 1 \
 		or 父节点 == null or not 父节点.has_meta("id") \
 		or 属性配置 == null:
 		return

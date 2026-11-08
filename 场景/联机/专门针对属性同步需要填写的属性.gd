@@ -11,7 +11,7 @@ var 写入缓存: Dictionary = {}
 
 func _ready() -> void:
 	if 属性配置 == null:
-		属性配置 = 属性
+		属性配置 = 属性字典
 
 # ============ 自身 → CXT → 报错 ============
 func _设置属性(物体: Node, 属性路径: String, 值) -> bool:

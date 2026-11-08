@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var 出生点2D坐标:Array[Vector2]=[]##可手动创建,也可以由出生点2D节点设置
 signal 当有玩家进入时
 signal 当创建房间时
 # Called when the node enters the scene tree for the first time.

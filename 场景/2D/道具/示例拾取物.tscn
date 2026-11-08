@@ -3,23 +3,21 @@
 [ext_resource type="Script" uid="uid://drh1uf18ati3r" path="res://场景/2D/脚本/组件/可拾取物.gd" id="1_pk"]
 [ext_resource type="PackedScene" uid="uid://02oc2nbbbojq" path="res://场景/2D/道具/示例武器.tscn" id="3_aiwjo"]
 [ext_resource type="Texture2D" uid="uid://bhj4rmquhkncs" path="res://场景/2D/贴图/序列图/Untitled 08-30-2026 06-05-51 (2).png" id="3_tx"]
-[ext_resource type="Script" uid="uid://dptdtvaj284rd" path="res://场景/2D/脚本/组件/物理组件.gd" id="4_g1owl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
-radius = 16.0
+radius = 41.929928
 
 [node name="示例拾取物" type="Area2D" unique_id=1637753875]
 
 [node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=109658611]
+scale = Vector2(2.5299952, -2.6779115)
 shape = SubResource("CircleShape2D_1")
 
 [node name="精灵" type="Sprite2D" parent="." unique_id=1535019018]
-scale = Vector2(0.15, 0.15)
+position = Vector2(-1, -1)
+scale = Vector2(1.04375, 0.98125)
 texture = ExtResource("3_tx")
 
 [node name="可拾取物" type="Node" parent="." unique_id=526021616]
 script = ExtResource("1_pk")
 "拾取的武器" = ExtResource("3_aiwjo")
-
-[node name="物理组件" type="Node" parent="." unique_id=1872749866]
-script = ExtResource("4_g1owl")

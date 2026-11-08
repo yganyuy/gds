@@ -16,7 +16,7 @@ func _ready() -> void:
 func 发送场景映射给客户端(peer_id: int):
 	if _实体功能==null or _实体功能.服务还是客户 != 1:
 		return
-	var 映射 = _实体功能.物体表.获取所有物体的场景路径映射()
+	var 映射 = _实体功能.自身物体表.获取所有物体的场景路径映射()
 	rpc_id(peer_id, "rpc_接收场景映射", 映射)
 	print("[服务端] 已发送场景映射给", peer_id, " 物体数:", 映射.size())
 
@@ -36,7 +36,7 @@ func rpc_接收场景映射(映射: Dictionary):
 
 	var 延迟挂载: Array = []
 	for ID in 排序后ID:
-		if _实体功能.物体表 != null and _实体功能.物体表.查找物体(ID) != null:
+		if _实体功能.自身物体表 != null and _实体功能.自身物体表.查找物体(ID) != null:
 			continue
 
 		var 数据 = 映射[ID]
@@ -63,7 +63,7 @@ func rpc_接收场景映射(映射: Dictionary):
 
 		if 父节点路径 != NodePath("") and 实际父节点 == get_tree().current_scene:
 			延迟挂载.append({"节点": 生成物, "父": 父节点路径, "id": ID})
-			# 先挂到 current_scene，保证 meta 生效、能入物体表
+			# 先挂到 current_scene，保证 meta 生效、能入自身物体表
 			实际父节点.add_child(生成物)
 		else:
 			if 实际父节点 == null:
@@ -71,8 +71,8 @@ func rpc_接收场景映射(映射: Dictionary):
 			实际父节点.add_child(生成物)
 
 		生成物.name = str(生成物.name) + str(ID)
-		if _实体功能.物体表 != null:
-			_实体功能.物体表.加入物体(生成物, ID)
+		if _实体功能.自身物体表 != null:
+			_实体功能.自身物体表.加入物体(生成物, ID)
 		_实体功能.生成时.emit(生成物, ID)
 
 	# 第二轮重试
@@ -89,7 +89,7 @@ func rpc_接收场景映射(映射: Dictionary):
 	_实体功能.初始化场景已经同步 = true
 
 func 清理本地所有物体():
-	var 所有ID = _实体功能.物体表.获取所有ID()
+	var 所有ID = _实体功能.自身物体表.获取所有ID()
 	for ID in 所有ID:
 		_实体功能.删除物体(ID)
 	print("已清理本地所有物体，数量:", 所有ID.size())

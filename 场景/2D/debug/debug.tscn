@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cfbxetas217ad"]
 
 [ext_resource type="Script" uid="uid://dptdtvaj284rd" path="res://场景/2D/脚本/组件/物理组件.gd" id="1_11sxn"]
+[ext_resource type="Texture2D" uid="uid://bmx385p33dv65" path="res://icon.svg" id="2_r5le5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
 
@@ -9,7 +10,12 @@
 [node name="碰撞形状2D" type="CollisionShape2D" parent="." unique_id=457345799]
 shape = SubResource("CircleShape2D_wvhbo")
 
-[node name="物理组件" type="Node" parent="." unique_id=1128253238]
+[node name="物理组件" type="Node" parent="." unique_id=1128253238 node_paths=PackedStringArray("目标节点")]
 script = ExtResource("1_11sxn")
 "重力" = 0.0
 "质量" = 0.0
+"目标节点" = NodePath("..")
+
+[node name="精灵" type="Sprite2D" parent="." unique_id=1641625591]
+scale = Vector2(0.115, 0.115)
+texture = ExtResource("2_r5le5")

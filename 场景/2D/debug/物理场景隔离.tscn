@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://cpdpoj0i7wn0y"]
+
+[ext_resource type="PackedScene" uid="uid://bp6p7gdwrlu2d" path="res://场景/2D/装置/地板.tscn" id="1_f7hhv"]
+[ext_resource type="Script" uid="uid://dkpmcnnegrh5d" path="res://场景/2D/脚本/摄像头管理.gd" id="2_7ftsr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wlgux"]
+radius = 154.22
+
+[node name="物理场景隔离" type="Node2D" unique_id=1897645909]
+
+[node name="PhysicsSpace2D22" type="PhysicsSpace2D" parent="." unique_id=1918492387]
+
+[node name="地板" parent="PhysicsSpace2D22" unique_id=2054287262 instance=ExtResource("1_f7hhv")]
+modulate = Color(1, 0.39, 0.39, 1)
+position = Vector2(-8, -507)
+
+[node name="刚体2D" type="RigidBody2D" parent="PhysicsSpace2D22" unique_id=905464122]
+gravity_scale = 2.067
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="PhysicsSpace2D22/刚体2D" unique_id=1428948741]
+shape = SubResource("CircleShape2D_wlgux")
+
+[node name="碰撞多边形2D" type="CollisionPolygon2D" parent="PhysicsSpace2D22/刚体2D" unique_id=1020933567]
+polygon = PackedVector2Array(-6, -155, -107, -109, -154, -34, -154, 11, -115, 103, -36, 152, 39, 150, 129, 92, 155, -3, 118, -93, 52, -150)
+
+[node name="PhysicsSpace2D" type="PhysicsSpace2D" parent="." unique_id=871261321]
+
+[node name="地板" parent="PhysicsSpace2D" unique_id=247873861 instance=ExtResource("1_f7hhv")]
+self_modulate = Color(0, 1, 1, 1)
+position = Vector2(-255, -427)
+
+[node name="刚体2D" type="RigidBody2D" parent="PhysicsSpace2D" unique_id=751191048]
+modulate = Color(0, 1, 1, 1)
+position = Vector2(102, 51)
+gravity_scale = 2.067
+
+[node name="碰撞形状2D" type="CollisionShape2D" parent="PhysicsSpace2D/刚体2D" unique_id=2136897608]
+shape = SubResource("CircleShape2D_wlgux")
+
+[node name="碰撞多边形2D" type="CollisionPolygon2D" parent="PhysicsSpace2D/刚体2D" unique_id=318888498]
+polygon = PackedVector2Array(-6, -155, -107, -109, -154, -34, -154, 11, -115, 103, -36, 152, 39, 150, 129, 92, 155, -3, 118, -93, 52, -150)
+
+[node name="摄像头管理" type="Node" parent="." unique_id=1690283799]
+script = ExtResource("2_7ftsr")
+"方式" = 2
+"目标缩放" = 1.935
+"自由最小缩放" = 0.155
